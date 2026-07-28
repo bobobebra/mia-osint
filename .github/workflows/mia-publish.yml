@@ -131,7 +131,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: Validate Python core
         working-directory: /tmp/mia-public/mia-source
