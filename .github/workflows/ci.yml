@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install development dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -e '.[dev]'
+      - name: Lint and format check
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Test
+        run: pytest
+      - name: Investigation smoke test
+        run: |
+          export HOME="$RUNNER_TEMP/mia-home-${{ matrix.python-version }}"
+          export MIA_STATE_DIR="$RUNNER_TEMP/mia-state-${{ matrix.python-version }}"
+          export MIA_CASES_DIR="$RUNNER_TEMP/mia-cases-${{ matrix.python-version }}"
+          export MIA_OUTPUT_DIR="$RUNNER_TEMP/mia-reports-${{ matrix.python-version }}"
+          mkdir -p "$HOME"
+          mia investigate d41d8cd98f00b204e9800998ecf8427e \
+            --type hash --tool hashid --no-pivot --name "CI smoke"
+          test -f "$MIA_CASES_DIR"/*/reports/index.html
+          test -f "$MIA_CASES_DIR"/*/graph/graph.graphml
+          test -f "$MIA_CASES_DIR"/*/timeline/timeline.json
+          mia case list --json > /tmp/mia-cases.json
+
+  shell:
+    name: Installer shell checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ShellCheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Check shell syntax
+        run: bash -n install.sh uninstall.sh install-mia.sh scripts/build_linux_installer.sh
+      - name: ShellCheck
+        run: shellcheck -x install.sh uninstall.sh install-mia.sh scripts/build_linux_installer.sh
+      - name: Build one-file Linux installer
+        run: |
+          bash scripts/build_linux_installer.sh /tmp/MIA-Linux-Installer.run
+          test -x /tmp/MIA-Linux-Installer.run
+          grep -a -q '__MIA_PAYLOAD_BELOW__' /tmp/MIA-Linux-Installer.run
+      - name: Exercise installer dry runs
+        run: |
+          ./install.sh --dry-run --yes --package-manager apt
+          ./install.sh --dry-run --yes --package-manager dnf
+          ./install.sh --dry-run --yes --package-manager pacman
+          ./install.sh --dry-run --yes --package-manager zypper
+          ./install.sh --dry-run --yes --package-manager apk
+          ./install.sh --dry-run --yes --package-manager brew
+          ./install.sh --dry-run --yes --package-manager none
+      - name: Exercise package manager dry runs
+        run: |
+          python -m pip install -e .
+          mia pkg groups
+          mia pkg list --json > /tmp/mia-packages.json
+          mia pkg install waymore --dry-run --yes --no-system --package-manager none
+          mia pkg install subfinder --dry-run --yes --package-manager apt
+
+  frontend:
+    name: Frontend builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            frontend-discover/package-lock.json
+            frontend-workbench/package-lock.json
+      - name: Build and lint MIA Workbench
+        run: |
+          npm --prefix frontend-workbench ci --no-audit --no-fund
+          npm --prefix frontend-workbench run build
+          npm --prefix frontend-workbench run lint
+      - name: Build and lint MIA Discover
+        run: |
+          npm --prefix frontend-discover ci --no-audit --no-fund
+          npm --prefix frontend-discover run build
+          npm --prefix frontend-discover run lint
+
+  build:
+    name: Build package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            frontend-discover/package-lock.json
+            frontend-workbench/package-lock.json
+      - name: Rebuild packaged interfaces
+        run: |
+          npm --prefix frontend-workbench ci --no-audit --no-fund
+          npm --prefix frontend-workbench run build
+          npm --prefix frontend-discover ci --no-audit --no-fund
+          npm --prefix frontend-discover run build
+      - name: Build and validate
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+          python -m twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: python-distributions
+          path: dist/*
+          if-no-files-found: error
