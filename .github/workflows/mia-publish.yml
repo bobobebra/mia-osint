@@ -214,6 +214,8 @@ jobs:
           git init -b main
           git config user.name 'bobobebra'
           git config user.email '149588933+bobobebra@users.noreply.github.com'
+          find .github/workflows -type f -delete
+          rmdir .github/workflows
           git add -A
           git commit -m 'Publish MIA 4.2.0 Alpha 9'
           git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git"
