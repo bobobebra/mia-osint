@@ -37,6 +37,16 @@ jobs:
           from pathlib import Path
 
           patches = {
+              "tests/conftest.py": [
+                  (
+                      "import pytest\n",
+                      "import pytest\nfrom typer import rich_utils\n",
+                  ),
+                  (
+                      "@pytest.fixture\ndef app_config",
+                      "@pytest.fixture(autouse=True)\ndef stable_cli_width(monkeypatch: pytest.MonkeyPatch) -> None:\n    monkeypatch.setattr(rich_utils, \"MAX_WIDTH\", 160)\n\n\n@pytest.fixture\ndef app_config",
+                  ),
+              ],
               "tests/test_assistant_providers.py": [
                   (
                       'runner.invoke(app, ["case", "summarize", "--help"])',
