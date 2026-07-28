@@ -40,35 +40,35 @@ jobs:
               "tests/test_assistant_providers.py": [
                   (
                       'runner.invoke(app, ["case", "summarize", "--help"])',
-                      'runner.invoke(app, ["case", "summarize", "--help"], terminal_width=160)',
+                      'runner.invoke(app, ["case", "summarize", "--help"], env={"COLUMNS": "160"})',
                   ),
               ],
               "tests/test_cli.py": [
                   (
                       'runner.invoke(app, ["pkg", command, "--help"])',
-                      'runner.invoke(app, ["pkg", command, "--help"], terminal_width=160)',
+                      'runner.invoke(app, ["pkg", command, "--help"], env={"COLUMNS": "160"})',
                   ),
               ],
               "tests/test_web_ui.py": [
                   (
                       'runner.invoke(cli_app, ["workbench", "--help"])',
-                      'runner.invoke(cli_app, ["workbench", "--help"], terminal_width=160)',
+                      'runner.invoke(cli_app, ["workbench", "--help"], env={"COLUMNS": "160"})',
                   ),
                   (
                       'runner.invoke(cli_app, ["discover", "--help"])',
-                      'runner.invoke(cli_app, ["discover", "--help"], terminal_width=160)',
+                      'runner.invoke(cli_app, ["discover", "--help"], env={"COLUMNS": "160"})',
                   ),
                   (
                       'runner.invoke(cli_app, ["ui", "--help"])',
-                      'runner.invoke(cli_app, ["ui", "--help"], terminal_width=160)',
+                      'runner.invoke(cli_app, ["ui", "--help"], env={"COLUMNS": "160"})',
                   ),
                   (
                       'runner.invoke(cli_app, ["workbench", "ui", "--help"])',
-                      'runner.invoke(cli_app, ["workbench", "ui", "--help"], terminal_width=160)',
+                      'runner.invoke(cli_app, ["workbench", "ui", "--help"], env={"COLUMNS": "160"})',
                   ),
                   (
                       'CliRunner().invoke(cli_app, ["workbench", "--allow-remote", "--no-browser"])',
-                      'CliRunner().invoke(cli_app, ["workbench", "--allow-remote", "--no-browser"], terminal_width=160)',
+                      'CliRunner().invoke(cli_app, ["workbench", "--allow-remote", "--no-browser"], env={"COLUMNS": "160"})',
                   ),
               ],
           }
