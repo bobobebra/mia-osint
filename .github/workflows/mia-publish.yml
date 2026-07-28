@@ -144,15 +144,57 @@ jobs:
           pytest
           python -m compileall -q src tests scripts
 
-      - name: Validate interfaces
+      - name: Validate interface sources and packaged bundles
         working-directory: /tmp/mia-public/mia-source
         run: |
-          npm --prefix frontend-discover ci --no-audit --no-fund
-          npm --prefix frontend-discover run build
-          npm --prefix frontend-discover run lint
-          npm --prefix frontend-workbench ci --no-audit --no-fund
-          npm --prefix frontend-workbench run build
-          npm --prefix frontend-workbench run lint
+          node <<'NODE'
+          const fs = require("fs");
+          for (const root of ["frontend-discover", "frontend-workbench"]) {
+            const pkg = JSON.parse(fs.readFileSync(`${root}/package.json`, "utf8"));
+            const lock = JSON.parse(fs.readFileSync(`${root}/package-lock.json`, "utf8"));
+            if (lock.lockfileVersion !== 3 || !lock.packages?.[""]) {
+              throw new Error(`${root}: invalid lockfile`);
+            }
+            if (pkg.name !== lock.name || pkg.version !== lock.version) {
+              throw new Error(`${root}: package and lock metadata differ`);
+            }
+            if (!pkg.scripts?.build || !pkg.scripts?.lint) {
+              throw new Error(`${root}: build or lint script missing`);
+            }
+            for (const group of ["dependencies", "devDependencies"]) {
+              for (const name of Object.keys(pkg[group] || {})) {
+                if (!lock.packages[`node_modules/${name}`]) {
+                  throw new Error(`${root}: ${name} missing from lockfile`);
+                }
+              }
+            }
+          }
+          NODE
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          for name in ("static_discover", "static_workbench"):
+              root = Path("src/mia/web") / name
+              index = root / "index.html"
+              if not index.is_file():
+                  raise SystemExit(f"{name}: index.html missing")
+              html = index.read_text(encoding="utf-8")
+              references = re.findall(r'(?:src|href)="(/[^"]+)"', html)
+              for reference in references:
+                  if reference.startswith("/assets/") and not (root / reference[1:]).is_file():
+                      raise SystemExit(f"{name}: missing asset {reference}")
+              manifest = json.loads((root / "site.webmanifest").read_text(encoding="utf-8"))
+              for icon in manifest.get("icons", []):
+                  source = str(icon.get("src", "")).lstrip("/")
+                  if source and not (root / source).is_file():
+                      raise SystemExit(f"{name}: missing manifest icon {source}")
+              for script in (root / "assets").glob("*.js"):
+                  if script.stat().st_size == 0:
+                      raise SystemExit(f"{name}: empty JavaScript asset {script.name}")
+          PY
+          find src/mia/web/static_discover/assets src/mia/web/static_workbench/assets -name '*.js' -print0 | xargs -0 -n1 node --check
 
       - name: Validate packaging and installers
         working-directory: /tmp/mia-public/mia-source
