@@ -35,15 +35,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: pip
 
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-          cache-dependency-path: |
-            /tmp/mia-public/mia-source/frontend-discover/package-lock.json
-            /tmp/mia-public/mia-source/frontend-workbench/package-lock.json
 
       - name: Validate Python core
         working-directory: /tmp/mia-public/mia-source
