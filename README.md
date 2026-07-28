@@ -1,7 +1,7 @@
 # MIA — local-first OSINT investigation platform
 
 > [!WARNING]
-> **MIA is an early, vibe-coded alpha.** A substantial part of its architecture,
+> **MIA is an early alpha.** A substantial part of its architecture,
 > code, tests, installer, and documentation was created with generative-AI
 > assistance under human direction and review. It has not received a professional
 > security audit, broad Windows or Linux certification, or independent accuracy validation.
