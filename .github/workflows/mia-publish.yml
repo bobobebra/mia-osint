@@ -49,17 +49,49 @@ jobs:
               ],
               "tests/test_assistant_providers.py": [
                   (
+                      "import pytest\nfrom typer.testing import CliRunner",
+                      "import pytest\nfrom click import unstyle\nfrom typer.testing import CliRunner",
+                  ),
+                  (
+                      'assert "--model" in result.stdout',
+                      'assert "--model" in unstyle(result.stdout)',
+                  ),
+                  (
                       'runner.invoke(app, ["case", "summarize", "--help"])',
                       'runner.invoke(app, ["case", "summarize", "--help"], env={"COLUMNS": "160"})',
                   ),
               ],
               "tests/test_cli.py": [
                   (
+                      "from typer.testing import CliRunner",
+                      "from click import unstyle\nfrom typer.testing import CliRunner",
+                  ),
+                  (
+                      'assert "--quiet" in result.stdout',
+                      'assert "--quiet" in unstyle(result.stdout)',
+                  ),
+                  (
                       'runner.invoke(app, ["pkg", command, "--help"])',
                       'runner.invoke(app, ["pkg", command, "--help"], env={"COLUMNS": "160"})',
                   ),
               ],
               "tests/test_web_ui.py": [
+                  (
+                      "import yaml\nfrom fastapi.testclient import TestClient",
+                      "import yaml\nfrom click import unstyle\nfrom fastapi.testclient import TestClient",
+                  ),
+                  (
+                      'assert "--no-browser" in workbench.stdout',
+                      'assert "--no-browser" in unstyle(workbench.stdout)',
+                  ),
+                  (
+                      'assert "--no-browser" in discover.stdout',
+                      'assert "--no-browser" in unstyle(discover.stdout)',
+                  ),
+                  (
+                      'assert "requires --token" in (result.stdout + getattr(result, "stderr", ""))',
+                      'assert "requires --token" in unstyle(result.stdout + getattr(result, "stderr", ""))',
+                  ),
                   (
                       'runner.invoke(cli_app, ["workbench", "--help"])',
                       'runner.invoke(cli_app, ["workbench", "--help"], env={"COLUMNS": "160"})',
