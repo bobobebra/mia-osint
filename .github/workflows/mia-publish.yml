@@ -147,10 +147,10 @@ jobs:
       - name: Validate interfaces
         working-directory: /tmp/mia-public/mia-source
         run: |
-          npm --prefix frontend-discover ci
+          npm --prefix frontend-discover ci --no-audit --no-fund
           npm --prefix frontend-discover run build
           npm --prefix frontend-discover run lint
-          npm --prefix frontend-workbench ci
+          npm --prefix frontend-workbench ci --no-audit --no-fund
           npm --prefix frontend-workbench run build
           npm --prefix frontend-workbench run lint
 
