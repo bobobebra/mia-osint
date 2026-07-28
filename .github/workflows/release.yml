@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            frontend-discover/package-lock.json
+            frontend-workbench/package-lock.json
+      - name: Build interfaces
+        run: |
+          npm --prefix frontend-workbench ci --no-audit --no-fund
+          npm --prefix frontend-workbench run build
+          npm --prefix frontend-discover ci --no-audit --no-fund
+          npm --prefix frontend-discover run build
+      - name: Build Python distributions
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+          python -m twine check dist/*
+      - name: Build easy Linux installer
+        run: |
+          bash scripts/build_linux_installer.sh dist/MIA-Linux-Installer.run
+          cp install-mia.sh dist/install-mia.sh
+      - name: Build source ZIP and checksums
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          git archive --format=zip --prefix="mia-${TAG}/" -o "dist/MIA-${TAG}.zip" HEAD
+          (cd dist && sha256sum * > SHA256SUMS.txt)
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" dist/* \
+            --verify-tag \
+            --notes-file RELEASE_NOTES.md \
+            --title "MIA $TAG"
