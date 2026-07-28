@@ -96,6 +96,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e '.[dev]'
+          ruff format tests/test_assistant_providers.py tests/test_cli.py tests/test_web_ui.py
           ruff check .
           ruff format --check .
           pytest
