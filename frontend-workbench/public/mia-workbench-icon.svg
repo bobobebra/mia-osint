@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MIA Workbench">
+  <defs>
+    <linearGradient id="bg" x1="6" y1="5" x2="58" y2="61" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#15152b"/>
+      <stop offset="1" stop-color="#070912"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="12" y1="14" x2="54" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a78bfa"/>
+      <stop offset=".55" stop-color="#6d8cff"/>
+      <stop offset="1" stop-color="#55d8ff"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bg)" stroke="#ffffff" stroke-opacity=".08"/>
+  <path d="M32 9 51 20v24L32 55 13 44V20Z" fill="none" stroke="url(#accent)" stroke-opacity=".72" stroke-width="2.4"/>
+  <path d="M21 39V24l11 9 11-9v15" fill="none" stroke="url(#accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M17 20 32 33 47 20M13 44l19-11 19 11" stroke="#8fa3ff" stroke-opacity=".22" stroke-width="1.5"/>
+  <circle cx="17" cy="20" r="3" fill="#a78bfa" filter="url(#glow)"/>
+  <circle cx="47" cy="20" r="3" fill="#55d8ff" filter="url(#glow)"/>
+  <circle cx="32" cy="33" r="3.4" fill="#8293ff" filter="url(#glow)"/>
+  <circle cx="13" cy="44" r="2.4" fill="#8c7dff"/>
+  <circle cx="51" cy="44" r="2.4" fill="#58cfff"/>
+</svg>

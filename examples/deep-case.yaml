@@ -1,0 +1,31 @@
+schema_version: "1.0"
+name: Example multi-seed investigation
+workflow: identity
+description: Replace all values with lawful, authorized investigation inputs.
+tags:
+  - example
+hypotheses:
+  - The supplied profiles may be related; this remains unverified.
+notes: |
+  Record scope, authorization, and known limitations here.
+seeds:
+  - target: example_handle
+    target_type: username
+    label: Known username
+    subject: primary
+    confidence: 1.0
+  - target: person@example.com
+    target_type: email
+    label: Potential email
+    subject: primary
+    confidence: 0.6
+    notes: Unverified lead.
+  - target: example.com
+    target_type: domain
+    label: Related domain
+    confidence: 0.6
+  - target: Example City
+    target_type: location
+    label: Context only
+    confidence: 0.5
+    notes: Location context is not proof of identity.

@@ -1,0 +1,66 @@
+name: Optional tool/package request
+description: Propose a third-party OSINT tool for the reviewed package catalog
+title: "[package]: "
+labels: ["package-catalog", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include targets, credentials, API keys, private reports, or proprietary data. Catalog inclusion is not guaranteed.
+  - type: input
+    id: upstream
+    attributes:
+      label: Canonical upstream repository/homepage
+      placeholder: https://github.com/owner/project
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: Upstream license
+      description: Link to the current license file when possible.
+    validations:
+      required: true
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Proposed risk label
+      options:
+        - local
+        - passive
+        - mixed
+    validations:
+      required: true
+  - type: dropdown
+    id: integration
+    attributes:
+      label: Proposed integration level
+      options:
+        - managed-only
+        - raw
+        - full
+    validations:
+      required: true
+  - type: textarea
+    id: install
+    attributes:
+      label: Official installation method
+      description: Quote only the minimum commands and link to upstream documentation.
+    validations:
+      required: true
+  - type: textarea
+    id: maintenance
+    attributes:
+      label: Maintenance, setup, and API requirements
+      description: Include archived/unmaintained status, required tokens, fees, quotas, and platform terms.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: The tool is not primarily for credential attacks, exploitation, malware, persistence, harassment, or rate-limit evasion.
+          required: true
+        - label: I understand that installability does not imply a MIA scan parser.
+          required: true

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MIA Discover">
+  <defs>
+    <linearGradient id="bg" x1="8" y1="6" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111820"/>
+      <stop offset="1" stop-color="#06090d"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="13" y1="12" x2="53" y2="54" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d8ff66"/>
+      <stop offset="1" stop-color="#58e0c0"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bg)" stroke="#ffffff" stroke-opacity=".08"/>
+  <circle cx="29" cy="28" r="17" fill="none" stroke="#d8ff66" stroke-opacity=".18" stroke-width="2"/>
+  <circle cx="29" cy="28" r="10" fill="none" stroke="#d8ff66" stroke-opacity=".28" stroke-width="2"/>
+  <path d="M29 28 43.5 18.4A17 17 0 0 1 45.2 33.2Z" fill="url(#accent)" fill-opacity=".18"/>
+  <path d="M29 11v5M12 28h5M29 40v5" stroke="#d8ff66" stroke-opacity=".48" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="29" cy="28" r="3.3" fill="url(#accent)" filter="url(#glow)"/>
+  <circle cx="41.5" cy="18.5" r="2.6" fill="#d8ff66" filter="url(#glow)"/>
+  <path d="m41.5 40.5 10 10" stroke="url(#accent)" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="30" cy="29" r="16" fill="none" stroke="url(#accent)" stroke-width="3.5"/>
+</svg>

@@ -1,0 +1,37 @@
+include .editorconfig .gitattributes .gitignore
+include README.md LICENSE CHANGELOG.md SECURITY.md CONTRIBUTING.md THIRD_PARTY.md VERIFICATION.md
+include AI_DISCLOSURE.md DISCLAIMER.md NOTICE CODE_OF_CONDUCT.md SUPPORT.md ROADMAP.md RELEASING.md RELEASE_NOTES.md CITATION.cff
+include requirements.txt requirements-dev.txt config.example.yaml
+include install.sh uninstall.sh Makefile
+recursive-include scripts *.py
+include src/mia/py.typed
+recursive-include src/mia/templates *.j2
+recursive-include src/mia/data *.yaml
+recursive-include docs *.md
+recursive-include examples *.py
+recursive-include tests *.py
+recursive-include .github *.yml *.md
+
+recursive-include src/mia/web/static_workbench *
+
+prune frontend-workbench/node_modules
+include frontend-workbench/index.html frontend-workbench/package.json frontend-workbench/package-lock.json frontend-workbench/eslint.config.js frontend-workbench/tsconfig.json frontend-workbench/tsconfig.app.json frontend-workbench/tsconfig.node.json frontend-workbench/vite.config.ts
+recursive-include frontend-workbench/src *.ts *.tsx *.css
+recursive-include frontend-workbench/public *
+
+recursive-include src/mia/web/static_discover *
+prune frontend-discover/node_modules
+include frontend-discover/index.html frontend-discover/package.json frontend-discover/package-lock.json frontend-discover/eslint.config.js frontend-discover/tsconfig.json frontend-discover/tsconfig.app.json frontend-discover/tsconfig.node.json frontend-discover/vite.config.ts
+recursive-include frontend-discover/src *.ts *.tsx *.css
+recursive-include frontend-discover/public *
+include install-mia.sh
+include scripts/build_linux_installer.sh
+recursive-include desktop *
+recursive-include packaging *
+prune desktop/node_modules
+prune desktop/src-tauri/target
+prune frontend-discover/node_modules
+prune frontend-workbench/node_modules
+prune build
+prune dist
+global-exclude __pycache__ *.py[cod] .DS_Store

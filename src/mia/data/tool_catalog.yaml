@@ -1,0 +1,884 @@
+schema_version: 1
+notes: This catalog manages third-party tools but does not imply endorsement, audit, compatibility guarantees, or
+  ownership. Tools marked mixed may perform active requests and are never included by --all unless --include-mixed
+  is supplied.
+groups:
+  core:
+  - maigret
+  - sherlock
+  - holehe
+  - spiderfoot
+  - exiftool
+  - whois
+  windows-core:
+  - maigret
+  - sherlock
+  - holehe
+  username:
+  - maigret
+  - sherlock
+  - blackbird
+  - social-analyzer
+  - osrframework
+  email:
+  - holehe
+  - ghunt
+  - h8mail
+  - mosint
+  domain:
+  - theharvester
+  - subfinder
+  - amass
+  - assetfinder
+  - findomain
+  - dnsx
+  - dnsrecon
+  - httpx
+  - gau
+  - waybackurls
+  - waymore
+  - dnstwist
+  - whatweb
+  - wafw00f
+  - asnmap
+  - tlsx
+  - github-subdomains
+  - chaos-client
+  phone:
+  - phoneinfoga
+  metadata:
+  - exiftool
+  - oletools
+  - pdfinfo
+  - strings
+  api:
+  - shodan
+  - censys
+  - vt-cli
+  - uncover
+  - chaos-client
+  - github-subdomains
+  cloud:
+  - cloud-enum
+  frameworks:
+  - spiderfoot
+  - recon-ng
+  - osrframework
+  passive:
+  - maigret
+  - sherlock
+  - holehe
+  - spiderfoot
+  - blackbird
+  - social-analyzer
+  - osrframework
+  - ghunt
+  - h8mail
+  - mosint
+  - theharvester
+  - subfinder
+  - assetfinder
+  - findomain
+  - gau
+  - waybackurls
+  - waymore
+  - asnmap
+  - github-subdomains
+  - chaos-client
+  - exiftool
+  - whois
+  - oletools
+  - pdfinfo
+  - strings
+  - shodan
+  - censys
+  - vt-cli
+  - uncover
+tools:
+  maigret:
+    name: Maigret
+    description: Username enumeration and profile collection.
+    homepage: https://github.com/soxoj/maigret
+    license: MIT
+    categories:
+    - username
+    target_types:
+    - username
+    integration: full
+    risk: passive
+    install:
+      kind: python
+      package: maigret
+      python: '3.11'
+      executable: maigret
+  sherlock:
+    name: Sherlock
+    description: Username search across social networks.
+    homepage: https://github.com/sherlock-project/sherlock
+    license: MIT
+    categories:
+    - username
+    target_types:
+    - username
+    integration: full
+    risk: passive
+    install:
+      kind: python
+      package: sherlock-project
+      python: '3.11'
+      executable: sherlock
+  holehe:
+    name: Holehe
+    description: Checks whether an email is registered on supported services.
+    homepage: https://github.com/megadose/holehe
+    license: GPL-3.0
+    categories:
+    - email
+    target_types:
+    - email
+    integration: full
+    risk: passive
+    install:
+      kind: holehe
+      package: holehe==1.61
+      python: '3.10'
+      executable: mia-holehe-runner
+  spiderfoot:
+    name: SpiderFoot
+    description: Modular OSINT automation framework.
+    homepage: https://github.com/smicallef/spiderfoot
+    license: MIT
+    categories:
+    - framework
+    - username
+    - email
+    - domain
+    - ip
+    target_types:
+    - username
+    - email
+    - domain
+    - ip
+    integration: full
+    risk: passive
+    install:
+      kind: spiderfoot
+      repo: https://github.com/smicallef/spiderfoot.git
+      ref: v4.0
+      python: '3.10'
+      executable: mia-spiderfoot
+  blackbird:
+    name: Blackbird
+    description: Username and email account discovery using WhatsMyName data.
+    homepage: https://github.com/p1ngul1n0/blackbird
+    license: unknown
+    categories:
+    - username
+    - email
+    target_types:
+    - username
+    - email
+    integration: raw
+    risk: passive
+    install:
+      kind: git_python_script
+      repo: https://github.com/p1ngul1n0/blackbird.git
+      ref: main
+      python: '3.11'
+      script: blackbird.py
+      executable: blackbird
+      requirements: requirements.txt
+  social-analyzer:
+    name: Social Analyzer
+    description: Social-profile discovery and metadata analysis.
+    homepage: https://github.com/qeeqbox/social-analyzer
+    license: AGPL-3.0
+    categories:
+    - username
+    target_types:
+    - username
+    integration: raw
+    risk: passive
+    install:
+      kind: python
+      package: social-analyzer
+      python: '3.11'
+      executable: social-analyzer
+  ghunt:
+    name: GHunt
+    description: Google-account and Google-asset OSINT framework.
+    homepage: https://github.com/mxrch/GHunt
+    license: AGPL-3.0
+    categories:
+    - email
+    - google
+    target_types:
+    - email
+    integration: managed-only
+    risk: passive
+    setup_required: true
+    install:
+      kind: python
+      package: ghunt
+      python: '3.11'
+      executable: ghunt
+  h8mail:
+    name: h8mail
+    description: Email OSINT and breach-data query client; data sources may require keys.
+    homepage: https://github.com/khast3x/h8mail
+    license: MIT
+    categories:
+    - email
+    target_types:
+    - email
+    integration: managed-only
+    risk: passive
+    api_keys:
+    - HIBP_API_KEY
+    install:
+      kind: python
+      package: h8mail
+      python: '3.11'
+      executable: h8mail
+  mosint:
+    name: Mosint
+    description: Email OSINT aggregator with optional API-backed services.
+    homepage: https://github.com/alpkeskin/mosint
+    license: MIT
+    categories:
+    - email
+    target_types:
+    - email
+    integration: managed-only
+    risk: passive
+    setup_required: true
+    install:
+      kind: go
+      module: github.com/alpkeskin/mosint/v3/cmd/mosint@latest
+      executable: mosint
+  theharvester:
+    name: theHarvester
+    description: Domain reconnaissance from public search engines and data sources.
+    homepage: https://github.com/laramies/theHarvester
+    license: GPL-2.0
+    categories:
+    - domain
+    - email
+    - host
+    target_types:
+    - domain
+    integration: raw
+    risk: passive
+    api_keys:
+    - BRAVE_API_KEY
+    - SHODAN_API_KEY
+    - CENSYS_API_ID
+    - CENSYS_API_SECRET
+    install:
+      kind: uv_project
+      repo: https://github.com/laramies/theHarvester.git
+      ref: master
+      python: '3.12'
+      executable: theHarvester
+  subfinder:
+    name: Subfinder
+    description: Passive subdomain enumeration.
+    homepage: https://github.com/projectdiscovery/subfinder
+    license: MIT
+    categories:
+    - domain
+    - subdomain
+    target_types:
+    - domain
+    integration: full
+    risk: passive
+    install:
+      kind: go
+      module: github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+      executable: subfinder
+  amass:
+    name: OWASP Amass
+    description: Attack-surface mapping and external asset discovery.
+    homepage: https://github.com/owasp-amass/amass
+    license: Apache-2.0
+    categories:
+    - domain
+    - subdomain
+    - framework
+    target_types:
+    - domain
+    integration: managed-only
+    risk: mixed
+    install:
+      kind: go
+      module: github.com/owasp-amass/amass/v5/cmd/amass@main
+      executable: amass
+      env:
+        CGO_ENABLED: '0'
+  assetfinder:
+    name: Assetfinder
+    description: Finds domains and subdomains related to a domain.
+    homepage: https://github.com/tomnomnom/assetfinder
+    license: MIT
+    categories:
+    - domain
+    - subdomain
+    target_types:
+    - domain
+    integration: full
+    risk: passive
+    install:
+      kind: go
+      module: github.com/tomnomnom/assetfinder@latest
+      executable: assetfinder
+  findomain:
+    name: Findomain
+    description: Certificate-transparency and API-based subdomain discovery.
+    homepage: https://github.com/Findomain/Findomain
+    license: GPL-3.0
+    categories:
+    - domain
+    - subdomain
+    target_types:
+    - domain
+    integration: raw
+    risk: passive
+    install:
+      kind: download_archive
+      executable: findomain
+      archive: zip
+      binary_path: findomain
+      urls:
+        linux-x86_64: https://github.com/Findomain/Findomain/releases/latest/download/findomain-linux.zip
+        linux-arm64: https://github.com/Findomain/Findomain/releases/latest/download/findomain-aarch64.zip
+        linux-armv7: https://github.com/Findomain/Findomain/releases/latest/download/findomain-armv7.zip
+  dnsx:
+    name: dnsx
+    description: DNS query and resolution toolkit.
+    homepage: https://github.com/projectdiscovery/dnsx
+    license: MIT
+    categories:
+    - domain
+    - dns
+    target_types:
+    - domain
+    integration: managed-only
+    risk: mixed
+    install:
+      kind: go
+      module: github.com/projectdiscovery/dnsx/cmd/dnsx@latest
+      executable: dnsx
+  httpx:
+    name: httpx
+    description: HTTP probing and technology metadata collection.
+    homepage: https://github.com/projectdiscovery/httpx
+    license: MIT
+    categories:
+    - domain
+    - ip
+    - web
+    target_types:
+    - domain
+    - ip
+    integration: full
+    risk: mixed
+    install:
+      kind: go
+      module: github.com/projectdiscovery/httpx/cmd/httpx@latest
+      executable: httpx
+    detect_args:
+    - -version
+    detect_signatures:
+    - projectdiscovery
+    - current version
+    - httpx version
+  gau:
+    name: gau
+    description: Fetches known URLs from public archive and intelligence sources.
+    homepage: https://github.com/lc/gau
+    license: MIT
+    categories:
+    - domain
+    - archive
+    - url
+    target_types:
+    - domain
+    integration: full
+    risk: passive
+    install:
+      kind: go
+      module: github.com/lc/gau/v2/cmd/gau@latest
+      executable: gau
+  waybackurls:
+    name: waybackurls
+    description: Fetches URLs known to the Wayback Machine for a domain.
+    homepage: https://github.com/tomnomnom/waybackurls
+    license: MIT
+    categories:
+    - domain
+    - archive
+    - url
+    target_types:
+    - domain
+    integration: managed-only
+    risk: passive
+    install:
+      kind: go
+      module: github.com/tomnomnom/waybackurls@latest
+      executable: waybackurls
+  dnstwist:
+    name: dnstwist
+    description: Detects lookalike domains and potential brand impersonation.
+    homepage: https://github.com/elceef/dnstwist
+    license: Apache-2.0
+    categories:
+    - domain
+    - brand
+    target_types:
+    - domain
+    integration: full
+    risk: mixed
+    install:
+      kind: python
+      package: dnstwist
+      python: '3.11'
+      executable: dnstwist
+  whatweb:
+    name: WhatWeb
+    description: Identifies web technologies and server metadata.
+    homepage: https://github.com/urbanadventurer/WhatWeb
+    license: GPL-2.0
+    categories:
+    - domain
+    - web
+    target_types:
+    - domain
+    - ip
+    integration: managed-only
+    risk: mixed
+    install:
+      kind: git_script
+      repo: https://github.com/urbanadventurer/WhatWeb.git
+      ref: master
+      script: whatweb
+      runtime: ruby
+      executable: whatweb
+      runtime_packages:
+        apt: ruby-full
+        dnf: ruby
+        pacman: ruby
+        zypper: ruby
+        apk: ruby
+        brew: ruby
+  wafw00f:
+    name: WAFW00F
+    description: Web application firewall fingerprinting.
+    homepage: https://github.com/EnableSecurity/wafw00f
+    license: BSD-3-Clause
+    categories:
+    - domain
+    - web
+    target_types:
+    - domain
+    - ip
+    integration: managed-only
+    risk: mixed
+    install:
+      kind: python
+      package: wafw00f
+      python: '3.11'
+      executable: wafw00f
+  phoneinfoga:
+    name: PhoneInfoga
+    description: Phone-number formatting, carrier, reputation, and OSINT helpers.
+    homepage: https://github.com/sundowndev/phoneinfoga
+    license: GPL-3.0
+    categories:
+    - phone
+    target_types:
+    - phone
+    integration: raw
+    risk: passive
+    unmaintained: false
+    install:
+      kind: download_archive
+      executable: phoneinfoga
+      archive: tar.gz
+      binary_path: phoneinfoga
+      urls:
+        linux-x86_64: https://github.com/sundowndev/phoneinfoga/releases/latest/download/phoneinfoga_Linux_x86_64.tar.gz
+        linux-arm64: https://github.com/sundowndev/phoneinfoga/releases/latest/download/phoneinfoga_Linux_arm64.tar.gz
+        linux-armv7: https://github.com/sundowndev/phoneinfoga/releases/latest/download/phoneinfoga_Linux_armv7.tar.gz
+        linux-i386: https://github.com/sundowndev/phoneinfoga/releases/latest/download/phoneinfoga_Linux_i386.tar.gz
+  exiftool:
+    name: ExifTool
+    description: Extracts metadata from images, documents, and media files.
+    homepage: https://exiftool.org/
+    license: Artistic-1.0 OR GPL-1.0+
+    categories:
+    - metadata
+    - file
+    target_types:
+    - file
+    integration: full
+    risk: local
+    install:
+      kind: system
+      executable: exiftool
+      packages:
+        apt: libimage-exiftool-perl
+        dnf: perl-Image-ExifTool
+        pacman: perl-image-exiftool
+        zypper: perl-Image-ExifTool
+        apk: exiftool
+        brew: exiftool
+  whois:
+    name: WHOIS
+    description: Domain and IP registration records.
+    homepage: https://github.com/rfc1036/whois
+    license: GPL-2.0+
+    categories:
+    - domain
+    - ip
+    target_types:
+    - domain
+    - ip
+    integration: full
+    risk: passive
+    install:
+      kind: system
+      executable: whois
+      packages:
+        apt: whois
+        dnf: whois
+        pacman: whois
+        zypper: whois
+        apk: whois
+        brew: whois
+  oletools:
+    name: oletools
+    description: Static analysis and metadata extraction for Microsoft Office files.
+    homepage: https://github.com/decalage2/oletools
+    license: BSD-2-Clause
+    categories:
+    - metadata
+    - file
+    target_types:
+    - file
+    integration: managed-only
+    risk: local
+    install:
+      kind: python
+      package: oletools
+      python: '3.11'
+      executable: oleid
+  pdfinfo:
+    name: pdfinfo
+    description: Reads PDF document metadata and structure.
+    homepage: https://poppler.freedesktop.org/
+    license: GPL-2.0+
+    categories:
+    - metadata
+    - file
+    target_types:
+    - file
+    integration: managed-only
+    risk: local
+    install:
+      kind: system
+      executable: pdfinfo
+      packages:
+        apt: poppler-utils
+        dnf: poppler-utils
+        pacman: poppler
+        zypper: poppler-tools
+        apk: poppler-utils
+        brew: poppler
+  strings:
+    name: GNU strings
+    description: Extracts printable strings from local files.
+    homepage: https://www.gnu.org/software/binutils/
+    license: GPL-3.0+
+    categories:
+    - metadata
+    - file
+    target_types:
+    - file
+    integration: managed-only
+    risk: local
+    install:
+      kind: system
+      executable: strings
+      packages:
+        apt: binutils
+        dnf: binutils
+        pacman: binutils
+        zypper: binutils
+        apk: binutils
+        brew: binutils
+  shodan:
+    name: Shodan CLI
+    description: Queries Shodan using the user's API key.
+    homepage: https://github.com/achillean/shodan-python
+    license: MIT
+    categories:
+    - api
+    - ip
+    - domain
+    target_types:
+    - ip
+    - domain
+    integration: managed-only
+    risk: passive
+    api_keys:
+    - SHODAN_API_KEY
+    setup_required: true
+    install:
+      kind: python
+      package: shodan
+      python: '3.11'
+      executable: shodan
+  censys:
+    name: Censys CLI
+    description: Queries Censys Search using user credentials.
+    homepage: https://github.com/censys/censys-python
+    license: Apache-2.0
+    categories:
+    - api
+    - ip
+    - domain
+    target_types:
+    - ip
+    - domain
+    integration: managed-only
+    risk: passive
+    api_keys:
+    - CENSYS_API_ID
+    - CENSYS_API_SECRET
+    setup_required: true
+    install:
+      kind: python
+      package: censys
+      python: '3.11'
+      executable: censys
+  vt-cli:
+    name: VirusTotal CLI
+    description: Queries VirusTotal using the user's API key.
+    homepage: https://github.com/VirusTotal/vt-cli
+    license: Apache-2.0
+    categories:
+    - api
+    - domain
+    - ip
+    - file
+    target_types:
+    - domain
+    - ip
+    - file
+    - hash
+    integration: managed-only
+    risk: passive
+    api_keys:
+    - VT_API_KEY
+    setup_required: true
+    install:
+      kind: go
+      module: github.com/VirusTotal/vt-cli/vt@latest
+      executable: vt
+  uncover:
+    name: uncover
+    description: Queries internet search APIs such as Shodan and Censys.
+    homepage: https://github.com/projectdiscovery/uncover
+    license: MIT
+    categories:
+    - api
+    - domain
+    - ip
+    target_types:
+    - domain
+    - ip
+    integration: managed-only
+    risk: passive
+    api_keys:
+    - SHODAN_API_KEY
+    - CENSYS_API_ID
+    - CENSYS_API_SECRET
+    setup_required: true
+    install:
+      kind: go
+      module: github.com/projectdiscovery/uncover/cmd/uncover@latest
+      executable: uncover
+  recon-ng:
+    name: Recon-ng
+    description: Modular web-based reconnaissance framework.
+    homepage: https://github.com/lanmaster53/recon-ng
+    license: GPL-3.0
+    categories:
+    - framework
+    target_types:
+    - domain
+    - email
+    - person
+    integration: managed-only
+    risk: mixed
+    install:
+      kind: git_python_script
+      repo: https://github.com/lanmaster53/recon-ng.git
+      ref: master
+      python: '3.11'
+      script: recon-ng
+      executable: recon-ng
+      requirements: REQUIREMENTS
+  asnmap:
+    name: asnmap
+    description: Maps organizations, ASNs, CIDRs, and related network ownership data.
+    homepage: https://github.com/projectdiscovery/asnmap
+    license: MIT
+    categories:
+    - domain
+    - ip
+    - asn
+    target_types:
+    - domain
+    - ip
+    integration: managed-only
+    risk: passive
+    install:
+      kind: go
+      module: github.com/projectdiscovery/asnmap/cmd/asnmap@latest
+      executable: asnmap
+  tlsx:
+    name: tlsx
+    description: Collects TLS certificates, protocol details, and endpoint metadata.
+    homepage: https://github.com/projectdiscovery/tlsx
+    license: MIT
+    categories:
+    - domain
+    - ip
+    - tls
+    target_types:
+    - domain
+    - ip
+    integration: managed-only
+    risk: mixed
+    install:
+      kind: go
+      module: github.com/projectdiscovery/tlsx/cmd/tlsx@latest
+      executable: tlsx
+  chaos-client:
+    name: Chaos Client
+    description: Queries ProjectDiscovery Chaos datasets using a user-supplied API key.
+    homepage: https://github.com/projectdiscovery/chaos-client
+    license: MIT
+    categories:
+    - api
+    - domain
+    - subdomain
+    target_types:
+    - domain
+    integration: managed-only
+    risk: passive
+    api_keys:
+    - PDCP_API_KEY
+    setup_required: true
+    install:
+      kind: go
+      module: github.com/projectdiscovery/chaos-client/cmd/chaos@latest
+      executable: chaos
+  github-subdomains:
+    name: github-subdomains
+    description: Finds subdomains from GitHub code using the user's GitHub token.
+    homepage: https://github.com/gwen001/github-subdomains
+    license: MIT
+    categories:
+    - api
+    - domain
+    - subdomain
+    target_types:
+    - domain
+    integration: managed-only
+    risk: passive
+    api_keys:
+    - GITHUB_TOKEN
+    setup_required: true
+    install:
+      kind: go
+      module: github.com/gwen001/github-subdomains@latest
+      executable: github-subdomains
+  dnsrecon:
+    name: DNSRecon
+    description: DNS record discovery and enumeration toolkit.
+    homepage: https://github.com/darkoperator/dnsrecon
+    license: GPL-2.0+
+    categories:
+    - domain
+    - dns
+    target_types:
+    - domain
+    integration: managed-only
+    risk: mixed
+    install:
+      kind: uv_project
+      repo: https://github.com/darkoperator/dnsrecon.git
+      ref: master
+      python: '3.12'
+      executable: dnsrecon
+  waymore:
+    name: waymore
+    description: Retrieves archived URLs and response data from public web archives.
+    homepage: https://github.com/xnl-h4ck3r/waymore
+    license: MIT
+    categories:
+    - domain
+    - archive
+    - url
+    target_types:
+    - domain
+    integration: managed-only
+    risk: passive
+    install:
+      kind: python
+      package: waymore
+      python: '3.12'
+      executable: waymore
+  osrframework:
+    name: OSRFramework
+    description: Collection of username, domain, email, and identity research utilities.
+    homepage: https://github.com/i3visio/osrframework
+    license: AGPL-3.0+
+    categories:
+    - framework
+    - username
+    - email
+    - domain
+    target_types:
+    - username
+    - email
+    - domain
+    integration: managed-only
+    risk: passive
+    unmaintained: true
+    install:
+      kind: python
+      package: osrframework
+      python: '3.11'
+      executable: usufy.py
+  cloud-enum:
+    name: cloud_enum
+    description: Enumerates public AWS, Azure, and Google Cloud resources by keyword.
+    homepage: https://github.com/initstring/cloud_enum
+    license: MIT
+    categories:
+    - cloud
+    - domain
+    target_types:
+    - keyword
+    - domain
+    integration: managed-only
+    risk: mixed
+    install:
+      kind: uv_project
+      repo: https://github.com/initstring/cloud_enum.git
+      ref: master
+      python: '3.11'
+      executable: cloud_enum

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MIA report — {{ result.target }}</title>
+  <style>
+    :root { color-scheme: light dark; --bg:#0b1020; --panel:#141b2d; --soft:#1d2740; --text:#edf2ff; --muted:#aeb9d4; --accent:#7dd3fc; --ok:#86efac; --warn:#fde68a; --bad:#fca5a5; --border:#2b3857; }
+    @media (prefers-color-scheme: light) { :root { --bg:#f5f7fb; --panel:#fff; --soft:#eef2f8; --text:#172033; --muted:#5c6880; --accent:#0369a1; --ok:#166534; --warn:#854d0e; --bad:#991b1b; --border:#d9e0eb; } }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { max-width:1280px; margin:auto; padding:32px 20px 64px; }
+    h1,h2,h3 { line-height:1.2; }
+    h1 { margin:0 0 6px; font-size:clamp(28px,5vw,44px); }
+    h2 { margin-top:36px; }
+    a { color:var(--accent); overflow-wrap:anywhere; }
+    code { background:var(--soft); padding:2px 6px; border-radius:6px; }
+    .muted { color:var(--muted); }
+    .hero,.card,.finding,.notice { background:var(--panel); border:1px solid var(--border); border-radius:16px; }
+    .hero { padding:24px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-top:18px; }
+    .card { padding:16px; }
+    .card strong { display:block; font-size:26px; }
+    .toolbar { display:flex; gap:12px; flex-wrap:wrap; margin:18px 0; }
+    input,select { background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:10px 12px; min-width:220px; }
+    table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:block; overflow-x:auto; }
+    thead,tbody,tr { width:100%; }
+    th,td { text-align:left; padding:11px 13px; border-bottom:1px solid var(--border); white-space:nowrap; }
+    th { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+    .status,.badge { display:inline-block; padding:3px 8px; border-radius:999px; background:var(--soft); font-size:12px; }
+    .status-success,.confidence-high { color:var(--ok); }
+    .status-failed,.status-timed_out,.status-unavailable { color:var(--bad); }
+    .status-partial,.confidence-medium { color:var(--warn); }
+    .finding { padding:18px; margin:12px 0; }
+    .finding-head { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }
+    .finding h3 { margin:0 0 6px; }
+    .source { margin-right:5px; }
+    details { margin-top:10px; }
+    pre { white-space:pre-wrap; word-break:break-word; background:var(--soft); padding:12px; border-radius:10px; max-height:320px; overflow:auto; }
+    .notice { padding:18px; margin-top:36px; border-left:5px solid var(--warn); }
+    .hidden { display:none !important; }
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="muted">MIA v{{ result.mia_version }} · {{ result.scan_id }}</div>
+    <h1>{{ result.target }}</h1>
+    <div>{{ result.target_type.value }} scan · {{ result.profile.value }} profile</div>
+    <div class="muted">{{ result.profile.description }}</div>
+    <div class="grid">
+      <div class="card"><span class="muted">Findings</span><strong>{{ result.findings|length }}</strong></div>
+      <div class="card"><span class="muted">Plugins completed</span><strong>{{ result.successful_plugins }}</strong></div>
+      <div class="card"><span class="muted">Plugin problems</span><strong>{{ result.failed_plugins }}</strong></div>
+      <div class="card"><span class="muted">Duration</span><strong>{{ '%.1f'|format(result.duration_seconds or 0) }}s</strong></div>
+    </div>
+  </section>
+
+  <h2>Plugin runs</h2>
+  <table>
+    <thead><tr><th>Plugin</th><th>Status</th><th>Duration</th><th>Findings</th><th>Return code</th><th>Notes</th></tr></thead>
+    <tbody>
+    {% for run in result.plugin_runs %}
+      <tr>
+        <td>{{ run.plugin_name }}</td>
+        <td><span class="status status-{{ run.status.value }}">{{ run.status.value }}</span></td>
+        <td>{{ '%.1f'|format(run.duration_seconds) }}s</td>
+        <td>{{ run.findings|length }}</td>
+        <td>{{ run.return_code if run.return_code is not none else '—' }}</td>
+        <td>{{ run.error or (run.warnings|join('; ')) or '—' }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Normalized findings</h2>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Filter findings…" aria-label="Filter findings">
+    <select id="category" aria-label="Filter category">
+      <option value="">All categories</option>
+      {% for category in categories %}<option value="{{ category|lower }}">{{ category }}</option>{% endfor %}
+    </select>
+  </div>
+
+  {% if not result.findings %}
+    <div class="card">No positive normalized findings were produced. Review plugin errors and raw outputs before treating this as a negative result.</div>
+  {% endif %}
+
+  {% for category, findings in categories.items() %}
+    <section class="category" data-category="{{ category|lower }}">
+      <h2>{{ category }} <span class="muted">({{ findings|length }})</span></h2>
+      {% for finding in findings %}
+      {% set display_title = finding.title|finding_title(finding.url) %}
+      <article class="finding" data-search="{{ (display_title ~ ' ' ~ finding.value ~ ' ' ~ finding.sources|join(' '))|lower }}">
+        <div class="finding-head">
+          <div>
+            <h3>{% if finding.url %}<a href="{{ finding.url }}" rel="noreferrer noopener">{{ display_title }}</a>{% else %}{{ display_title }}{% endif %}</h3>
+            <div class="muted">{{ finding.value }}</div>
+          </div>
+          <span class="badge confidence-{{ finding.confidence_label|lower|replace(' ','-') }}">{{ finding.confidence_label }} · {{ finding.confidence|percent }}</span>
+        </div>
+        <p>
+          {% for source in finding.sources %}<span class="badge source">{{ source }}</span>{% endfor %}
+          <span class="muted">{{ finding.occurrences }} occurrence{{ '' if finding.occurrences == 1 else 's' }}</span>
+        </p>
+        <details>
+          <summary>Evidence and confidence</summary>
+          <ul>{% for reason in finding.confidence_reasons %}<li>{{ reason }}</li>{% endfor %}</ul>
+          {% if finding.attributes %}<pre>{{ finding.attributes|tojson(indent=2) }}</pre>{% endif %}
+          {% if finding.evidence_paths %}<p class="muted">Evidence: {{ finding.evidence_paths|join(', ') }}</p>{% endif %}
+        </details>
+      </article>
+      {% endfor %}
+    </section>
+  {% endfor %}
+
+  <section class="notice">
+    <strong>Responsible-use notice</strong>
+    <p>These results are leads, not proof that records or accounts belong to the same person. Public sources change, tools produce false positives, and automated checks may be rate-limited. Verify manually and use MIA only for a lawful, authorized purpose.</p>
+  </section>
+</main>
+<script>
+(() => {
+  const search = document.getElementById('search');
+  const category = document.getElementById('category');
+  const apply = () => {
+    const query = search.value.trim().toLowerCase();
+    const selected = category.value;
+    document.querySelectorAll('.category').forEach(section => {
+      const categoryMatches = !selected || section.dataset.category === selected;
+      let visible = 0;
+      section.querySelectorAll('.finding').forEach(item => {
+        const matches = categoryMatches && (!query || item.dataset.search.includes(query));
+        item.classList.toggle('hidden', !matches);
+        if (matches) visible++;
+      });
+      section.classList.toggle('hidden', visible === 0);
+    });
+  };
+  search.addEventListener('input', apply);
+  category.addEventListener('change', apply);
+})();
+</script>
+</body>
+</html>

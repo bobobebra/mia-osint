@@ -1,0 +1,56 @@
+name: Bug report
+description: Report a reproducible, sanitized MIA defect
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        MIA is an early, vibe-coded alpha. Do not upload real targets, raw reports, credentials, tokens, or personal data. Security vulnerabilities belong in private vulnerability reporting, not here.
+  - type: input
+    id: version
+    attributes:
+      label: MIA version
+      placeholder: "4.2.0a9"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Distribution, release, architecture, Python, and package manager
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Sanitized command and target type
+      description: Replace real targets with safe examples.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and sanitized output
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: Sanitized `mia doctor`, plugin version, and relevant raw stderr lines
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I removed personal data, secrets, private paths, and real case material.
+          required: true
+        - label: This is not a vulnerability requiring private disclosure.
+          required: true

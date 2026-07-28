@@ -1,0 +1,10 @@
+MIA v4 public alpha
+
+MIA is open-source software licensed under MIT. It is an early, substantially
+vibe-coded project developed with generative-AI assistance under human direction
+and review. It is not professionally audited or evidence-grade.
+
+MIA can install or invoke separately maintained third-party projects. Those
+projects are not part of the MIA license and retain their own licenses, terms,
+security properties, and data-source rules. See THIRD_PARTY.md and the package
+catalog before installing or using them.

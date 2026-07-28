@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MIA</title>
+    <style>
+      :root { color-scheme: dark; font-family: Inter, "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 20% 10%, #17315d 0, transparent 32%), #080c14; color: #eef4ff; }
+      main { min-height: 100vh; display: grid; place-items: center; padding: 36px; }
+      .shell { width: min(920px, 100%); }
+      header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+      .mark { width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center; background: linear-gradient(145deg, #74a5ff, #5576ff); box-shadow: 0 18px 60px #477dff45; font-weight: 900; font-size: 24px; }
+      h1 { margin: 0; font-size: 34px; letter-spacing: -.04em; }
+      header p { margin: 4px 0 0; color: #9fafc8; }
+      .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+      button { text-align: left; appearance: none; border: 1px solid #263651; border-radius: 24px; background: linear-gradient(150deg, #121b2c, #0d1421); color: inherit; padding: 26px; cursor: pointer; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+      button:hover { transform: translateY(-3px); border-color: #668ee4; box-shadow: 0 22px 70px #0008; }
+      button:disabled { cursor: progress; opacity: .65; transform: none; }
+      .icon { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 16px; margin-bottom: 28px; background: #1c2b43; overflow: hidden; }
+      .icon img { width: 100%; height: 100%; display: block; }
+      button:last-child .icon { background: #272546; }
+      h2 { margin: 0 0 8px; font-size: 24px; }
+      button p { margin: 0; color: #9fafc8; line-height: 1.55; }
+      .arrow { display: inline-block; margin-top: 24px; color: #a9c4ff; font-weight: 700; }
+      #status { display: none; margin-top: 20px; padding: 18px 20px; border: 1px solid #2b3b56; border-radius: 16px; background: #101827; color: #b9c6da; }
+      #status.active { display: flex; align-items: center; gap: 13px; }
+      #status.error { display: block; border-color: #65364a; background: #26151d; color: #ffc5d5; white-space: pre-wrap; }
+      .spinner { width: 18px; height: 18px; border: 2px solid #4b5c78; border-top-color: #8db2ff; border-radius: 50%; animation: spin .7s linear infinite; }
+      small { display: block; margin-top: 18px; color: #66758d; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (max-width: 700px) { .choices { grid-template-columns: 1fr; } main { padding: 22px; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="shell">
+        <header>
+          <div class="mark">M</div>
+          <div><h1>MIA</h1><p>Choose the interface for this session.</p></div>
+        </header>
+        <section class="choices" id="choices">
+          <button type="button" data-mode="discover">
+            <span class="icon"><img src="mia-discover-icon.svg" alt="" /></span>
+            <h2>MIA Discover</h2>
+            <p>Guided username, email, profile and selector searches with clear evidence labels.</p>
+            <span class="arrow">Open Discover →</span>
+          </button>
+          <button type="button" data-mode="workbench">
+            <span class="icon"><img src="mia-workbench-icon.svg" alt="" /></span>
+            <h2>MIA Workbench</h2>
+            <p>Advanced cases, evidence graphs, review queues, packages and investigation controls.</p>
+            <span class="arrow">Open Workbench →</span>
+          </button>
+        </section>
+        <div id="status"><span class="spinner"></span><span id="status-text">Starting MIA Core…</span></div>
+        <small>MIA Core runs only on this computer and closes with the desktop application.</small>
+      </div>
+    </main>
+    <script>
+      const status = document.getElementById("status");
+      const statusText = document.getElementById("status-text");
+      const buttons = [...document.querySelectorAll("button[data-mode]")];
+
+      async function launch(mode) {
+        buttons.forEach(button => button.disabled = true);
+        status.className = "active";
+        statusText.textContent = `Starting MIA ${mode === "discover" ? "Discover" : "Workbench"}…`;
+        try {
+          await window.__TAURI__.core.invoke("launch_mode", { mode });
+        } catch (error) {
+          window.miaError(String(error));
+        }
+      }
+
+      buttons.forEach(button => button.addEventListener("click", () => launch(button.dataset.mode)));
+      window.miaReady = (url) => window.location.replace(url);
+      window.miaError = (message) => {
+        buttons.forEach(button => button.disabled = false);
+        status.className = "error";
+        status.textContent = message;
+      };
+    </script>
+  </body>
+</html>

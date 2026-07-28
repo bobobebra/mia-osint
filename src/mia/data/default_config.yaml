@@ -1,0 +1,506 @@
+execution:
+  max_concurrency: 3
+  max_capture_bytes: 52428800
+  default_timeout: 600
+  keep_negative_findings: false
+  cache:
+    enabled: true
+    ttl_seconds: 86400
+    api_ttl_seconds: 3600
+    reuse_failed: false
+reports:
+  html: true
+  json: true
+  text: true
+  markdown: true
+  create_latest_symlink: true
+  dashboard_raw_excerpt_bytes: 12000
+profiles:
+  quick:
+  - maigret
+  - holehe
+  - exiftool
+  - dns
+  - hashid
+  - subfinder
+  - assetfinder
+  - phoneinfoga
+  default:
+  - maigret
+  - sherlock
+  - holehe
+  - exiftool
+  - dns
+  - whois
+  - hashid
+  - subfinder
+  - assetfinder
+  - blackbird
+  - phoneinfoga
+  deep:
+  - maigret
+  - sherlock
+  - spiderfoot
+  - holehe
+  - exiftool
+  - dns
+  - whois
+  - hashid
+  - subfinder
+  - assetfinder
+  - gau
+  - theharvester
+  - blackbird
+  - httpx
+  - phoneinfoga
+  - api-shodan
+  - api-virustotal
+  - api-hibp
+  - api-securitytrails
+  - api-censys
+  - api-intelx
+  all:
+  - '*'
+tools:
+  maigret:
+    enabled: true
+    executable: maigret
+    timeout: 900
+    install_hint: python3 -m pip install maigret
+    profile_args:
+      quick:
+      - --top-sites
+      - '100'
+      - --no-recursion
+      - --no-autoupdate
+      - --timeout
+      - '10'
+      default:
+      - --top-sites
+      - '300'
+      - --no-autoupdate
+      - --timeout
+      - '15'
+      deep:
+      - --top-sites
+      - '500'
+      - --no-autoupdate
+      - --timeout
+      - '20'
+      all:
+      - --all-sites
+      - --no-autoupdate
+      - --timeout
+      - '30'
+  sherlock:
+    enabled: true
+    executable: sherlock
+    timeout: 900
+    install_hint: python3 -m pip install sherlock-project
+    profile_args:
+      quick:
+      - --timeout
+      - '10'
+      default:
+      - --timeout
+      - '20'
+      deep:
+      - --timeout
+      - '30'
+      all:
+      - --timeout
+      - '60'
+  spiderfoot:
+    enabled: true
+    executable: mia-spiderfoot
+    timeout: 1800
+    install_hint: Run ./install.sh to install the official SpiderFoot v4.0 release
+      and wrapper
+    profile_args:
+      quick:
+      - -u
+      - passive
+      - -q
+      - -max-threads
+      - '5'
+      default:
+      - -u
+      - passive
+      - -q
+      - -max-threads
+      - '8'
+      deep:
+      - -u
+      - investigate
+      - -q
+      - -max-threads
+      - '10'
+      all:
+      - -u
+      - all
+      - -q
+      - -max-threads
+      - '20'
+  holehe:
+    enabled: true
+    executable: mia-holehe-runner
+    timeout: 300
+    install_hint: Run ./install.sh to install Holehe in an isolated tool environment
+    profile_args:
+      quick:
+      - --timeout
+      - '8'
+      default:
+      - --timeout
+      - '10'
+      deep:
+      - --timeout
+      - '12'
+      all:
+      - --timeout
+      - '20'
+  exiftool:
+    enabled: true
+    executable: exiftool
+    timeout: 120
+    install_hint: Run ./install.sh or install ExifTool with your Linux package manager
+  whois:
+    enabled: true
+    executable: whois
+    timeout: 120
+    install_hint: Run ./install.sh or install the whois package with your Linux package
+      manager
+  dns:
+    enabled: true
+    timeout: 30
+  hashid:
+    enabled: true
+    timeout: 10
+  subfinder:
+    enabled: true
+    executable: subfinder
+    timeout: 600
+    install_hint: mia pkg install subfinder
+    profile_args:
+      quick:
+      - -timeout
+      - '10'
+      - -max-time
+      - '3'
+      default:
+      - -timeout
+      - '20'
+      - -max-time
+      - '8'
+      deep:
+      - -timeout
+      - '30'
+      - -max-time
+      - '15'
+      all:
+      - -timeout
+      - '45'
+      - -max-time
+      - '30'
+      - -all
+  assetfinder:
+    enabled: true
+    executable: assetfinder
+    timeout: 300
+    install_hint: mia pkg install assetfinder
+  gau:
+    enabled: true
+    executable: gau
+    timeout: 600
+    install_hint: mia pkg install gau
+    profile_args:
+      quick:
+      - --threads
+      - '2'
+      - --timeout
+      - '15'
+      default:
+      - --threads
+      - '3'
+      - --timeout
+      - '30'
+      deep:
+      - --subs
+      - --threads
+      - '5'
+      - --timeout
+      - '45'
+      all:
+      - --subs
+      - --threads
+      - '10'
+      - --timeout
+      - '60'
+  httpx:
+    enabled: true
+    executable: httpx
+    timeout: 600
+    install_hint: mia pkg install httpx
+    profile_args:
+      quick:
+      - -timeout
+      - '5'
+      - -retries
+      - '1'
+      default:
+      - -timeout
+      - '10'
+      - -retries
+      - '1'
+      deep:
+      - -timeout
+      - '15'
+      - -retries
+      - '2'
+      all:
+      - -timeout
+      - '20'
+      - -retries
+      - '2'
+      - -asn
+      - -cdn
+      - -favicon
+  dnstwist:
+    enabled: true
+    executable: dnstwist
+    timeout: 900
+    install_hint: mia pkg install dnstwist
+    profile_args:
+      quick:
+      - --threads
+      - '5'
+      default:
+      - --threads
+      - '10'
+      deep:
+      - --threads
+      - '20'
+      all:
+      - --threads
+      - '30'
+      - --mxcheck
+  blackbird:
+    enabled: true
+    executable: blackbird
+    timeout: 900
+    install_hint: mia pkg install blackbird
+  social-analyzer:
+    enabled: true
+    executable: social-analyzer
+    timeout: 1200
+    install_hint: mia pkg install social-analyzer
+    profile_args:
+      quick:
+      - --top
+      - '100'
+      default:
+      - --top
+      - '300'
+      deep:
+      - --top
+      - '700'
+      all:
+      - --top
+      - '1000'
+  theharvester:
+    enabled: true
+    executable: theHarvester
+    timeout: 1200
+    install_hint: mia pkg install theharvester
+    profile_args:
+      quick:
+      - -b
+      - crtsh
+      - -l
+      - '100'
+      default:
+      - -b
+      - crtsh,duckduckgo
+      - -l
+      - '300'
+      deep:
+      - -b
+      - crtsh,duckduckgo,rapiddns,urlscan
+      - -l
+      - '500'
+      all:
+      - -b
+      - all
+      - -l
+      - '1000'
+  phoneinfoga:
+    enabled: true
+    executable: phoneinfoga
+    timeout: 300
+    install_hint: mia pkg install phoneinfoga
+confidence:
+  default_source_reliability:
+    maigret: 0.72
+    sherlock: 0.68
+    spiderfoot: 0.65
+    holehe: 0.72
+    exiftool: 0.94
+    whois: 0.88
+    dns: 0.9
+    hashid: 0.8
+    subfinder: 0.76
+    assetfinder: 0.68
+    gau: 0.66
+    httpx: 0.82
+    dnstwist: 0.7
+    blackbird: 0.69
+    social-analyzer: 0.62
+    theharvester: 0.68
+    phoneinfoga: 0.56
+    api-shodan: 0.9
+    api-virustotal: 0.9
+    api-hibp: 0.92
+    api-securitytrails: 0.9
+    api-censys: 0.9
+    api-intelx: 0.75
+pivoting:
+  enabled: false
+  max_depth: 2
+  max_targets: 25
+  min_confidence: 0.65
+  child_profile: quick
+  allowed_types:
+  - username
+  - email
+  - domain
+  - ip
+  - phone
+  - hash
+  - certificate
+  include_lookalike_domains: false
+workspaces:
+  auto_update_dashboard: true
+  auto_correlate: true
+  graph_max_nodes_in_dashboard: 1500
+verification:
+  enabled: true
+  timeout: 15
+  max_profiles: 60
+  max_concurrency: 5
+  max_response_bytes: 2097152
+  store_html: false
+  avatar_download: true
+  allow_private_networks: false
+identity:
+  cluster_threshold: 0.58
+  strong_cluster_threshold: 0.78
+  contradiction_threshold: 0.28
+  username_only_cap: 0.38
+  max_pairwise_profiles: 250
+account_discovery:
+  enabled: true
+  generate_variants: true
+  max_generated_variants: 24
+  follow_public_profile_links: true
+  max_link_hops: 2
+deep_cases:
+  profile: deep
+  verify_profiles: true
+  enable_pivoting: true
+  max_depth: 2
+  max_targets: 75
+  analysis_depth: thorough
+  workflow: identity
+  continue_on_seed_failure: true
+assistant:
+  provider: local
+  enabled: true
+  endpoint: https://api.openai.com/v1/chat/completions
+  model: ''
+  api_service: assistant
+  timeout: 90
+  send_raw_evidence: false
+  max_nodes: 200
+  max_context_items: 250
+  max_text_chars: 4000
+  analysis_depth: standard
+  max_passes: 8
+  providers:
+    openai-compatible:
+      endpoint: https://api.openai.com/v1/chat/completions
+      model: ''
+      thinking_level: null
+      api_service: assistant
+      timeout: 90
+      requires_key: true
+      extra_headers: {}
+    gemini:
+      endpoint: https://generativelanguage.googleapis.com/v1beta
+      model: ''
+      thinking_level: high
+      api_service: gemini
+      timeout: 90
+      requires_key: true
+      extra_headers: {}
+    ollama:
+      endpoint: http://localhost:11434/api
+      model: ''
+      thinking_level: null
+      api_service: ollama
+      timeout: 90
+      requires_key: false
+      extra_headers: {}
+apis:
+  shodan:
+    enabled: false
+    endpoint: https://api.shodan.io
+    key_env: MIA_SHODAN_API_KEY
+    timeout: 30
+  virustotal:
+    enabled: false
+    endpoint: https://www.virustotal.com/api/v3
+    key_env: MIA_VIRUSTOTAL_API_KEY
+    timeout: 30
+  hibp:
+    enabled: false
+    endpoint: https://haveibeenpwned.com/api/v3
+    key_env: MIA_HIBP_API_KEY
+    timeout: 30
+  securitytrails:
+    enabled: false
+    endpoint: https://api.securitytrails.com/v1
+    key_env: MIA_SECURITYTRAILS_API_KEY
+    timeout: 30
+  censys:
+    enabled: false
+    endpoint: https://api.platform.censys.io/v3
+    key_env: MIA_CENSYS_API_KEY
+    timeout: 30
+    organization_id: null
+  intelx:
+    enabled: false
+    endpoint: https://2.intelx.io
+    key_env: MIA_INTELX_API_KEY
+    timeout: 30
+  assistant:
+    enabled: false
+    endpoint: https://api.openai.com/v1/chat/completions
+    key_env: MIA_ASSISTANT_API_KEY
+    timeout: 90
+    key_env_aliases:
+    - OPENAI_API_KEY
+  gemini:
+    enabled: false
+    endpoint: https://generativelanguage.googleapis.com/v1beta
+    key_env: GEMINI_API_KEY
+    key_env_aliases:
+    - GOOGLE_API_KEY
+    - MIA_GEMINI_API_KEY
+    timeout: 30
+  ollama:
+    enabled: false
+    endpoint: http://localhost:11434/api
+    key_env: OLLAMA_API_KEY
+    key_env_aliases:
+    - MIA_OLLAMA_API_KEY
+    timeout: 30

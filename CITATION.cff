@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use MIA in published research, cite the repository release and disclose the exact tool versions used."
+title: "MIA"
+type: software
+version: "4.2.0-alpha.9"
+date-released: 2026-07-13
+license: MIT
+authors:
+  - family-names: "Contributors"
+    given-names: "MIA"
+abstract: "MIA Core with guided Discover and advanced Workbench interfaces for local-first OSINT investigations."
+keywords:
+  - OSINT
+  - command-line
+  - investigation
+  - reporting
