@@ -81,6 +81,24 @@ def test_go_install_dry_run_installs_go_prerequisite(
     )
 
 
+def test_go_install_dry_run_without_system_manager_records_manual_prerequisite(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr("mia.package_manager.shutil.which", lambda name: None)
+    manager = PackageManager(
+        state_dir=tmp_path / "state",
+        bin_dir=tmp_path / "bin",
+        package_manager="none",
+        dry_run=True,
+    )
+
+    result = manager.install(manager.catalog.tools["subfinder"])
+
+    assert result.success
+    assert ["manual-prerequisite", "go"] in result.commands
+    assert any(" go install " in f" {' '.join(command)} " for command in result.commands)
+
+
 def test_system_packages_are_preserved_by_default(tmp_path: Path) -> None:
     state_dir = tmp_path / "state"
     manager = PackageManager(
