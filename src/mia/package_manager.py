@@ -683,6 +683,9 @@ class PackageManager:
     def _ensure_command(self, executable: str, package_map: dict[str, str]) -> None:
         if shutil.which(executable):
             return
+        if self.dry_run and (not self.allow_system or not package_map.get(self.package_manager)):
+            self._commands.append(["manual-prerequisite", executable])
+            return
         if not self.allow_system:
             raise PackageError(f"required command {executable!r} is missing (--no-system was used)")
         package = package_map.get(self.package_manager)

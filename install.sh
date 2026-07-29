@@ -312,7 +312,7 @@ install_core_environment() {
     fail "Dependency validation failed. The previous installation was preserved."
   fi
 
-  actual_version="$($VENV_DIR/bin/mia --version 2>>"$LOG_FILE" || true)"
+  actual_version="$("$VENV_DIR/bin/mia" --version 2>>"$LOG_FILE" || true)"
   if [[ "$actual_version" != "$EXPECTED_VERSION" ]]; then
     warn "Expected MIA $EXPECTED_VERSION but the new environment reported ${actual_version:-no version}."
     restore_previous_environment
