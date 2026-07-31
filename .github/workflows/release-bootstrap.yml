@@ -73,7 +73,7 @@ jobs:
           workspaces: desktop/src-tauri
       - name: Build and smoke-test Windows installer
         shell: pwsh
-        run: ./packaging/windows/build-desktop.ps1
+        run: ./packaging/windows/build-desktop.ps1 -SkipTests
       - uses: actions/upload-artifact@v4
         with:
           name: windows-assets

@@ -1,5 +1,9 @@
 # PyInstaller specification for the MIA Core sidecar used by Tauri on Windows.
+from pathlib import Path
+
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules, copy_metadata
+
+ROOT = Path(SPECPATH).resolve().parents[1]
 
 hiddenimports = []
 for package in ("keyring.backends", "uvicorn", "websockets", "multipart"):
@@ -13,8 +17,8 @@ for package in ("keyring", "uvicorn", "fastapi", "starlette", "pydantic"):
         pass
 
 a = Analysis(
-    ["src/mia/desktop_backend.py"],
-    pathex=["src", "."],
+    [str(ROOT / "src" / "mia" / "desktop_backend.py")],
+    pathex=[str(ROOT / "src"), str(ROOT)],
     binaries=[],
     datas=datas,
     hiddenimports=hiddenimports,
