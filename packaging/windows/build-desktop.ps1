@@ -38,8 +38,8 @@ npm --prefix frontend-workbench run build
   --noconfirm
 
 Copy-Item "$BuildRoot/pyinstaller/dist/mia-core.exe" "$BinaryDir/mia-core-$Target.exe" -Force
-$Uv = (& $Python -c "import shutil; print(shutil.which('uv') or '')").Trim()
-if (-not $Uv -or -not (Test-Path $Uv)) { throw "The uv.exe dependency was not found in the Windows build environment." }
+$Uv = Join-Path $Venv "Scripts/uv.exe"
+if (-not (Test-Path $Uv)) { throw "The uv.exe dependency was not found in the Windows build environment." }
 Copy-Item $Uv "$BinaryDir/uv-$Target.exe" -Force
 
 ./packaging/windows/test-sidecar.ps1 -CoreExe "$BinaryDir/mia-core-$Target.exe" -Mode discover
