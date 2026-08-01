@@ -5,20 +5,39 @@ param(
 
 $ErrorActionPreference = "Stop"
 $Handshake = Join-Path $env:TEMP "mia-sidecar-$Mode-$PID.json"
-Remove-Item $Handshake -Force -ErrorAction SilentlyContinue
+$Stdout = Join-Path $env:TEMP "mia-sidecar-$Mode-$PID.stdout.log"
+$Stderr = Join-Path $env:TEMP "mia-sidecar-$Mode-$PID.stderr.log"
+Remove-Item $Handshake, $Stdout, $Stderr -Force -ErrorAction SilentlyContinue
 $Process = Start-Process -FilePath $CoreExe -ArgumentList @(
   "--mode", $Mode,
   "--port", "0",
   "--handshake", $Handshake
-) -PassThru -WindowStyle Hidden
+) -PassThru -WindowStyle Hidden -RedirectStandardOutput $Stdout -RedirectStandardError $Stderr
+
+function Get-SidecarDiagnostics {
+  $Parts = @()
+  if (Test-Path $Stdout) {
+    $Parts += "stdout: $((Get-Content $Stdout -Raw -ErrorAction SilentlyContinue).Trim())"
+  }
+  if (Test-Path $Stderr) {
+    $Parts += "stderr: $((Get-Content $Stderr -Raw -ErrorAction SilentlyContinue).Trim())"
+  }
+  return ($Parts -join [Environment]::NewLine)
+}
 
 try {
-  $Deadline = (Get-Date).AddSeconds(45)
+  $Deadline = (Get-Date).AddSeconds(120)
   while ((Get-Date) -lt $Deadline -and -not (Test-Path $Handshake)) {
-    if ($Process.HasExited) { throw "MIA Core exited before creating its handshake file." }
+    if ($Process.HasExited) {
+      throw "MIA Core exited before creating its handshake file.$([Environment]::NewLine)$(Get-SidecarDiagnostics)"
+    }
     Start-Sleep -Milliseconds 200
   }
-  if (-not (Test-Path $Handshake)) { throw "MIA Core did not create a handshake within 45 seconds." }
+  if (-not (Test-Path $Handshake)) {
+    Stop-Process -Id $Process.Id -Force -ErrorAction SilentlyContinue
+    Wait-Process -Id $Process.Id -ErrorAction SilentlyContinue
+    throw "MIA Core did not create a handshake within 120 seconds.$([Environment]::NewLine)$(Get-SidecarDiagnostics)"
+  }
   $Ready = Get-Content $Handshake -Raw | ConvertFrom-Json
   if ($Ready.status -ne "ready") { throw "MIA Core startup failed: $($Ready.error)" }
   $Health = Invoke-RestMethod -Uri "$($Ready.url)/api/health" -TimeoutSec 15
@@ -30,5 +49,5 @@ finally {
   if (-not $Process.HasExited) {
     Stop-Process -Id $Process.Id -Force -ErrorAction SilentlyContinue
   }
-  Remove-Item $Handshake -Force -ErrorAction SilentlyContinue
+  Remove-Item $Handshake, $Stdout, $Stderr -Force -ErrorAction SilentlyContinue
 }
