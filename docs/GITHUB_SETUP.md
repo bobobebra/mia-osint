@@ -20,8 +20,9 @@ commands GitHub displays for an existing local repository.
 
 ## Recommended repository settings
 
-- Set the description to clearly include “early alpha” and “vibe-coded.”
-- Add topics such as `osint`, `python`, `linux`, `cli`, and `vibe-coded`.
+- Suggested description: “A local-first app for finding, organizing, and reviewing public information.”
+- Suggested topics: `osint`, `open-source-intelligence`, `python`, `local-first`,
+  `research-tools`, `privacy`, `tauri`, and `investigation`.
 - Enable Issues and, optionally, Discussions.
 - Enable private vulnerability reporting.
 - Enable Dependabot alerts, secret scanning, and push protection where
