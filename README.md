@@ -1,30 +1,28 @@
-# MIA — local-first OSINT investigation platform
+# MIA — find and organize public information
 
 > [!WARNING]
-> **MIA is an early alpha.** A substantial part of its architecture,
-> code, tests, installer, and documentation was created with generative-AI
-> assistance under human direction and review. It has not received a professional
-> security audit, broad Windows or Linux certification, or independent accuracy validation.
-> Expect bugs, upstream breakage, false positives, false negatives, and breaking
-> changes. MIA produces investigative leads, not proof of identity, ownership,
-> compromise, intent, or wrongdoing.
+> **MIA is new and experimental.** Much of the project was built with AI
+> assistance, then reviewed and tested by a human. It has not been independently
+> audited, and it can still contain bugs or return incomplete and incorrect
+> results. Treat everything it finds as a lead to check yourself, not as proof.
 
-MIA is a Windows-and-Linux, local-first OSINT investigation platform. It orchestrates
-separately installed tools and passive APIs, normalizes their output, builds a
-persistent evidence graph, follows explicit indicators through bounded automatic
-pivoting, correlates exact entities across cases, and produces a modern offline
-case dashboard.
+MIA helps you search for publicly available information and keep the results
+organized on your own computer. It brings several OSINT tools and optional data
+services into one place, cleans up their output, connects related findings, and
+builds an offline dashboard you can return to later.
 
-MIA's defining feature is not the number of tools it launches. The value is what
-happens **after** those tools finish: provenance, normalization, explainable
-confidence, relationships, timelines, correlations, notes, attachments, and
-reusable case history.
+The useful part is what happens **after** a search finishes. MIA remembers where
+each result came from and lets you review connections, timelines, notes,
+attachments, screenshots, and earlier searches without juggling a pile of
+separate reports.
 
-MIA is organized as one project with three product layers:
+MIA has three parts:
 
-- **MIA Core** — the shared backend, CLI, scanners, storage, verification, and API;
-- **MIA Discover** — guided selector search and public-account discovery;
-- **MIA Workbench** — advanced cases, evidence review, graphs, packages, and analysis.
+- **MIA Core** runs searches and stores the results;
+- **MIA Discover** gives you a simple guided search for public accounts and
+  other information;
+- **MIA Workbench** is the larger workspace for cases, notes, graphs, files,
+  and deeper review.
 
 ```console
 mia investigate octocat --type username --name "Octocat research" --pivot
@@ -33,53 +31,50 @@ mia investigate octocat --type username --name "Octocat research" --pivot
 ## Project status
 
 - Release: **4.2.0 alpha 9** (`4.2.0a9`)
-- Stability: **early experimental alpha**
-- Development style: **substantially vibe-coded with AI assistance**
-- Security review: **no professional audit**
-- Accuracy review: **no evidence-grade validation**
-- Compatibility promise: **best effort only**
+- Stability: **early alpha — expect rough edges**
+- Development: **built with substantial AI assistance and human review**
+- Independent audit: **not yet**
+- Accuracy: **important findings must be checked manually**
+- Compatibility: **Windows 11 and common Linux distributions are the main focus**
 - License: **MIT**
 
 Read [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md), [`DISCLAIMER.md`](DISCLAIMER.md),
 [`SECURITY.md`](SECURITY.md), and
 [`docs/RESPONSIBLE_USE.md`](docs/RESPONSIBLE_USE.md) before use.
 
-## What changed in v4
+## What MIA can do
 
-MIA v4 keeps the v3 scanner and package manager, then adds an investigation
-layer:
+MIA can:
 
-- persistent case workspaces with SQLite, notes, evidence, screenshots, logs,
-  scans, graph exports, timeline exports, reports, and portable JSON;
-- an interactive offline evidence graph with node and relationship inspection;
-- explainable relationship confidence with factors that raise, lower, or leave
-  confidence unchanged;
-- configurable automatic pivoting with target allow-lists, confidence threshold,
-  depth and target limits, caching, and loop prevention;
-- a shared local knowledge database for exact cross-case correlations;
-- an offline dashboard with graph, timeline, filters, statistics, raw excerpts,
-  plugin logs, notes, attachments, screenshots, and assistant output;
-- a deterministic local investigation assistant plus OpenAI-compatible, Google
-  Gemini, and local/cloud Ollama providers that reject statements lacking valid
-  evidence IDs;
-- opt-in passive integrations for Shodan, VirusTotal, Have I Been Pwned,
+- keep each search in a reusable case with notes, screenshots, files, logs,
+  and reports;
+- show findings and their connections in an interactive graph and timeline;
+- explain why a possible connection looks stronger or weaker;
+- follow selected public clues automatically while staying inside limits you
+  choose;
+- notice exact matches that appeared in earlier local cases;
+- create an offline dashboard for reviewing and sharing a case;
+- summarize a case locally, or use an optional AI provider when you choose;
+- connect to optional services such as Shodan, VirusTotal, Have I Been Pwned,
   SecurityTrails, Censys, and Intelligence X;
-- API-key storage through environment variables or the operating-system keyring;
-- a community plugin SDK with manifests, compatibility ranges, package
-  dependencies, API requirements, scaffolding, validation, installation, health
-  checks, and versioning;
-- persistent plugin-result caching and asynchronous bounded tool execution;
-- the existing 40-tool optional package catalog and cross-distribution installer.
+- install and manage a catalog of optional OSINT tools;
+- support community plugins without mixing them into MIA Core.
 
 See [`RELEASE_NOTES.md`](RELEASE_NOTES.md) and
 [`docs/MIGRATION_V3_TO_V4.md`](docs/MIGRATION_V3_TO_V4.md).
 
-MIA 4.2 alpha 9 adds the native Windows port: Windows application-data paths, hidden and cancellable process execution, managed `.cmd` tool shims, Windows tool capability checks, a frozen MIA Core sidecar, a Tauri launcher, an NSIS installer build, and Windows CI. Alpha 8 added the one-file Linux installer, application-menu launchers, transactional upgrade recovery, and `mia repair`. Alpha 7 introduced the dashboard-first Discover interface, platform-specific username seeds, separate application icons, and explicit external-AI cost confirmation. Alpha 5 was the account-link false-positive hardening release. **MIA 4.1 alpha 1** adds Deep Cases and an identity-verification workflow: many heterogeneous investigator-supplied leads can live in one case; profile hits are verified separately from discovery; public metadata and snapshots are compared into explainable clusters; contradictions become manual-review tasks; and optional AI analysis runs sequential analyst, skeptic, verifier, planner, and synthesis passes with mandatory evidence citations.
+Version 4.2 alpha 9 adds the native Windows app and installer. Earlier alpha
+releases added the one-file Linux installer, application-menu shortcuts,
+automatic repair, the guided Discover interface, clearer account matching, and
+confirmation before sending data to an external AI service.
 
-**MIA 4.2 alpha 3** specializes the simple UI in public account discovery. A public social-profile URL is converted into a scan-ready handle, careful formatting variants can be checked, and explicit links from one public profile to another are preserved as strong association evidence. Same-handle or similar-handle results remain leads and never become identity proof on their own.
+The simple interface is designed around finding public accounts. You can paste a
+public profile URL, check sensible username variations, and keep links that one
+profile openly provides to another. A matching or similar username is still only
+a possible lead; it does not prove that two accounts belong to the same person.
 
 
-## Deep Cases and identity verification
+## Bring related clues into one case
 
 Create one case from many possible indicators:
 
@@ -101,9 +96,12 @@ mia deeps deep-case.yaml
 mia deeps --case CASE_ID --username another_handle --email another@example.com
 ```
 
-For identity workflows, discovery URLs remain candidates until MIA verifies the public page or platform API. GitHub, Roblox, and Reddit have dedicated public-data adapters; generic sites use conservative title/metadata/visible-text checks, soft-404 detection, bounded snapshots, redirect checks, and private-network blocking. Matching usernames alone are capped as weak evidence.
+MIA keeps newly discovered profile links as unconfirmed until it can check the
+public page or public platform API. GitHub, Roblox, and Reddit have dedicated
+connectors. Other websites use careful page checks and small snapshots. A
+matching username by itself is always treated as weak evidence.
 
-Run deterministic clustering and the review queue:
+Group possible matches and open the review queue:
 
 ```console
 mia case verify CASE_ID
@@ -111,14 +109,16 @@ mia case cluster CASE_ID
 mia case review CASE_ID
 ```
 
-Run sequential evidence-grounded analysis:
+Ask MIA to summarize the case while citing its stored findings:
 
 ```console
 mia case analyze CASE_ID --depth thorough
 mia case analyze CASE_ID --depth exhaustive --provider gemini --thinking-level high
 ```
 
-Later passes receive only the grounded output of earlier passes. Remote providers receive bounded normalized case context, which may contain personal data; use the local provider when the case must remain on-device.
+When you choose a remote AI provider, MIA sends a limited, organized summary of
+the case. That summary can still contain personal information. Use the local
+provider when the case needs to stay entirely on your computer.
 
 Read [`docs/DEEP_CASES.md`](docs/DEEP_CASES.md), [`docs/PROFILE_VERIFICATION.md`](docs/PROFILE_VERIFICATION.md), and [`docs/IDENTITY_ANALYSIS.md`](docs/IDENTITY_ANALYSIS.md).
 
@@ -138,9 +138,13 @@ Launch the advanced investigation workspace:
 mia workbench
 ```
 
-Each interface has one public launch command. The former `mia ui`, `mia discover ui`, and `mia workbench ui` forms were removed in alpha 7.
+Each interface has one launch command. Older commands such as `mia ui` were
+removed in alpha 7.
 
-MIA Discover provides automatic selector detection, Quick/Standard/Deep modes, live progress, grouped account and data cards, local history, evidence-aware identity labels, graph exploration, and separate no-AI verification and explicitly confirmed optional AI explanation. MIA Workbench provides Deep Cases, evidence uploads, review queues, detailed graph controls, timelines, package management, provider configuration, and exports.
+MIA Discover recognizes what you enter, offers Quick, Standard, and Deep search
+modes, shows live progress, groups results into readable cards, and keeps a
+local history. MIA Workbench adds larger cases, uploaded files, review queues,
+graphs, timelines, optional-tool management, AI settings, and exports.
 
 Both bind to localhost by default. See [docs/UI.md](docs/UI.md).
 
@@ -184,7 +188,7 @@ bash MIA-Linux-Installer.run --mia-only --yes
 ### Install from the source archive on Linux
 
 ```console
-unzip MIA-v4.2.0-alpha.9-windows-port.zip
+unzip MIA-v4.2.0-alpha.9.zip
 cd mia-osint-4.2.0-alpha.9
 bash install.sh
 ```
@@ -216,20 +220,20 @@ mia api list
 
 ## Investigations and cases
 
-Create a persistent case and run one root scan:
+Start a case with one search:
 
 ```console
 mia investigate octocat --type username --name "Octocat research"
 ```
 
-Enable bounded automatic pivoting:
+Let MIA follow related public clues, with limits:
 
 ```console
 mia investigate octocat --type username --name "Octocat research" \
   --pivot --max-depth 2 --max-targets 25
 ```
 
-Append a later scan to the same case:
+Add another search to the same case later:
 
 ```console
 mia investigate person@example.com --type email --case case-20260712-ab12cd34
@@ -249,7 +253,7 @@ mia case correlations CASE
 mia case archive CASE
 ```
 
-A case is stored under `~/mia_cases` by default:
+By default, MIA stores each case under `~/mia_cases`:
 
 ```text
 case-name-<id>/
@@ -281,43 +285,42 @@ Read [`docs/WORKSPACES.md`](docs/WORKSPACES.md),
 
 ## Evidence graph and confidence
 
-Each normalized entity becomes a node. Examples include usernames, accounts,
-emails, domains, IP addresses, phone numbers, certificates, breaches,
-repositories, companies, URLs, documents, and metadata records.
+MIA turns each useful finding into a point on the graph. A point might be a
+username, account, email address, domain, phone number, company, URL, document,
+repository, or metadata record.
 
-Relationships are explicit edges such as `has_account`, `associated_email`,
-`resolves_to`, `appeared_in`, or `triggered_scan`. Every relationship stores:
+Lines between those points show how MIA found a possible connection. Every
+connection keeps:
 
-- source and target node IDs;
-- a relation type and human-readable label;
-- confidence score and label;
-- plain-language reasons;
-- structured factors explaining positive, negative, or neutral effects;
-- provenance and attributes.
+- the two findings it connects;
+- a readable connection type;
+- a confidence label and score;
+- plain-language reasons for the score;
+- the source of the information and any useful details.
 
-A displayed percentage is a prioritization heuristic, **not identity
-probability**. Matching usernames alone do not prove that two records belong to
-the same person. See [`docs/CONFIDENCE.md`](docs/CONFIDENCE.md).
+The percentage helps you decide what to review first. It is **not** the chance
+that two accounts belong to the same person. A matching username alone proves
+nothing. See [`docs/CONFIDENCE.md`](docs/CONFIDENCE.md).
 
 ## Automatic pivoting
 
-Pivoting is off by default. MIA only queues explicit normalized indicators and
-never treats a workflow edge as proof of common ownership.
+Automatic follow-up searches are off by default. When enabled, MIA only follows
+clear, supported clues and never treats a connection as proof that two records
+have the same owner.
 
 ```console
 mia investigate TARGET --pivot --max-depth 2 --max-targets 25
 ```
 
-Controls include:
+You choose:
 
-- allowed target types;
-- minimum source confidence;
-- maximum recursion depth;
-- maximum unique targets;
-- child scan profile;
-- duplicate and loop prevention;
-- optional exclusion of lookalike domains;
-- result caching.
+- which kinds of clues MIA may follow;
+- how strong a clue must be;
+- how many steps and unique searches it may run;
+- which search mode follow-up searches use;
+- whether to exclude lookalike domains.
+
+MIA avoids duplicate loops and reuses recent results when possible.
 
 Review every scope before enabling pivots. See [`docs/PIVOTING.md`](docs/PIVOTING.md).
 
@@ -335,7 +338,7 @@ List their status:
 mia api list
 ```
 
-Store a key in the operating-system keyring and enable the integration:
+Save a key in your operating system's secure key store and enable the service:
 
 ```console
 mia api set shodan
@@ -349,15 +352,16 @@ export MIA_SHODAN_API_KEY='...'
 export MIA_VIRUSTOTAL_API_KEY='...'
 ```
 
-Keys are never written to MIA YAML, reports, subprocess command lines, or package
-state. An explicit `--insecure-file` fallback exists for systems without a
-usable keyring and writes a mode-0600 plaintext file after warning the user.
+MIA does not put API keys in its configuration files, reports, command lines,
+or package records. If a secure key store is unavailable, there is an explicit
+`--insecure-file` fallback that warns you before creating a private plaintext
+file.
 
 See [`docs/API_INTEGRATIONS.md`](docs/API_INTEGRATIONS.md).
 
 ## Evidence-grounded assistant
 
-The default `local` provider is deterministic and network-free:
+The default local summary works without an internet connection:
 
 ```console
 mia case summarize CASE
@@ -375,11 +379,11 @@ mia assistant configure ollama --model gemma3 --default
 ```
 
 Local Ollama does not require a key. Gemini accepts `GEMINI_API_KEY`,
-`GOOGLE_API_KEY`, or keyring storage through `mia api set gemini`. Remote
-summaries receive bounded normalized evidence, not raw files by default.
-Every returned factual statement must cite valid case node or edge IDs; invalid
-or uncited statements are discarded. This reduces hallucination risk but does
-not eliminate it. See [`docs/AI_ASSISTANT.md`](docs/AI_ASSISTANT.md).
+`GOOGLE_API_KEY`, or secure key storage through `mia api set gemini`. Remote
+summaries receive an organized selection of case findings, not raw files by
+default. MIA requires each factual statement to point back to a stored finding
+and drops statements that do not. This helps, but AI can still make mistakes.
+See [`docs/AI_ASSISTANT.md`](docs/AI_ASSISTANT.md).
 
 ## Classic scans remain available
 
@@ -417,9 +421,9 @@ mia pkg uninstall blackbird
 mia pkg doctor
 ```
 
-Catalog presence means MIA knows an installation recipe. It does not mean the
-upstream project is audited, currently maintained, safe for every environment,
-or fully parsed into MIA reports. Read
+If a tool appears in the catalog, MIA knows one way to install it. That does not
+guarantee that the tool is audited, actively maintained, safe on every system,
+or fully understood by MIA. Read
 [`docs/PACKAGE_MANAGER.md`](docs/PACKAGE_MANAGER.md) and
 [`THIRD_PARTY.md`](THIRD_PARTY.md).
 
@@ -435,9 +439,9 @@ mia plugin uninstall my-plugin
 ```
 
 A generated plugin includes `manifest.yaml`, `plugin.py`, `README.md`, and tests.
-The manifest declares a plugin version, compatible MIA range, target types,
-Python requirements, MIA package-catalog dependencies, API services, license,
-and homepage. See [`docs/PLUGIN_SDK.md`](docs/PLUGIN_SDK.md).
+Its manifest records the version, supported MIA versions and input types,
+dependencies, API services, license, and homepage. See
+[`docs/PLUGIN_SDK.md`](docs/PLUGIN_SDK.md).
 
 ## Local knowledge and cache
 
@@ -455,20 +459,22 @@ mia cache status
 mia cache clear
 ```
 
-MIA correlations are exact normalized-value matches. They are suggestions for
-review, not claims that different cases concern the same person or organization.
+MIA only links cases here when the cleaned values match exactly. These matches
+are suggestions to review, not claims that two cases involve the same person or
+organization.
 
 ## Security boundaries
 
-MIA uses `shell=False`, bounded output capture, process-group timeouts, HTML
-escaping, private default permissions, isolated tool environments, and
-credential separation. These are defense-in-depth controls, **not a sandbox**.
-Third-party tools run with the current user's permissions and may contact remote
-services according to their own behavior.
+MIA avoids shell command interpolation, limits captured output, stops tools that
+run too long, escapes report content, keeps files private by default, and
+separates credentials. These protections reduce risk, but MIA is **not a
+sandbox**. Optional third-party tools still run with your account's permissions
+and may contact their own online services.
 
-Cases, raw outputs, screenshots, API responses, and knowledge databases may
-contain personal or sensitive information. Minimize collection, protect files,
-respect authorization and applicable law, and delete data when no longer needed.
+Cases, original results, screenshots, API responses, and local history can
+contain personal information. Collect only what you need, protect the files,
+respect the law and other people's privacy, and delete the data when you are
+finished with it.
 
 ## Development
 
