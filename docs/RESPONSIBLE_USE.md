@@ -1,18 +1,21 @@
 # Responsible use
 
-MIA aggregates public-source and locally supplied evidence. Aggregation can make otherwise scattered personal data easier to interpret, so use it with care.
+MIA brings public information and files you provide into one place. That can
+make scattered details much easier to connect, so please use it thoughtfully.
 
 ## Appropriate uses
 
-- reviewing your own public exposure;
-- authorized security assessments and red-team engagements;
-- fraud, brand, trust-and-safety, or incident investigations with a lawful basis;
-- journalistic or academic research performed under applicable ethical and legal standards;
-- metadata inspection of files you are authorized to examine.
+- seeing what information about you is publicly visible;
+- checking accounts, websites, or systems you own or have clear permission to review;
+- researching scams, impersonation, brand misuse, or an incident for a legitimate reason;
+- journalistic or academic research that follows the relevant rules and ethical standards;
+- checking metadata in your own files or files you have permission to examine.
 
 ## Prohibited project scope
 
-MIA does not include credential attacks, password guessing, session theft, authentication bypass, malware delivery, exploit execution, automated rate-limit evasion, or covert persistence.
+MIA is not built for stealing accounts, guessing passwords, bypassing logins,
+spreading malware, exploiting systems, dodging service limits, or secretly
+keeping access to another device.
 
 ## Interpretation
 
@@ -23,20 +26,23 @@ MIA does not include credential attacks, password guessing, session theft, authe
 - Metadata can be removed, rewritten, or forged.
 - Captchas, blocking, and network errors must be treated as unknown.
 
-Record the date, tool versions, raw evidence, and manual verification steps in any consequential investigation.
+For anything important, keep the date, tool versions, original results, and a
+note explaining what you checked yourself.
 
 ## Data handling
 
-Raw outputs may include names, locations, contact hints, and identifiers. Use restrictive filesystem permissions, limit retention, encrypt sensitive case archives, and redact before sharing. Do not commit reports or the MIA SQLite database to a public repository.
+Results can include names, locations, contact details, and other personal
+information. Protect the files, keep them only as long as needed, encrypt
+sensitive archives, and remove private details before sharing. Never upload MIA
+reports or its case database to a public repository.
 
-## Multi-seed identity investigations
+## Combining several clues
 
-Putting usernames, emails, addresses, names, or locations in one Deep Case does
-not establish that they refer to one person. Treat hypotheses and user-supplied
-context as unverified. Do not use MIA to harass, stalk, discriminate, publish
-private addresses, bypass access controls, or make automated adverse decisions.
+Putting usernames, email addresses, names, or locations in the same case does
+not mean they belong to one person. Treat your own assumptions as unconfirmed.
+Do not use MIA to harass, stalk, discriminate, publish private addresses, bypass
+access controls, or make automatic decisions that could harm someone.
 
-Remote AI analysis can transmit normalized personal data and investigator notes
-to the configured provider. Use the deterministic local provider for cases that
-must remain on-device and follow all applicable privacy, employment, research,
-and investigative policies.
+Remote AI analysis can send organized personal information and your notes to
+the provider you choose. Use the local option when the case must stay on your
+device, and follow the privacy and research rules that apply to you.
