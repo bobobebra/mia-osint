@@ -1,6 +1,6 @@
 [package]
 name = "mia-desktop"
-version = "4.2.0-alpha.9"
+version = "4.2.0-alpha.10"
 description = "Windows desktop shell for MIA Discover and MIA Workbench"
 authors = ["MIA contributors"]
 edition = "2021"

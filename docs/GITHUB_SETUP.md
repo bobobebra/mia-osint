@@ -47,12 +47,14 @@ Do not publish placeholder URLs.
 ## First tag and release
 
 ```console
-git tag -a v4.2.0-alpha.9 -m "MIA 4.2.0 alpha 9"
-git push origin v4.2.0-alpha.9
+git tag -a v4.2.0-alpha.10 -m "MIA 4.2.0 alpha 10"
+git push origin v4.2.0-alpha.10
 ```
 
-The release workflow builds the wheel, source distribution, repository ZIP, and
-SHA-256 file, then creates a GitHub release from the tag.
+The release workflow builds the Windows x64 setup, self-extracting Linux
+installer, Linux bootstrapper, wheel, source distribution, repository ZIP, and
+complete SHA-256 file. It creates the prerelease only after both the Windows and
+portable jobs succeed.
 
 Before tagging, follow `RELEASING.md` and confirm that the release notes repeat
 the alpha, vibe-coding, no-audit, and false-positive warnings.

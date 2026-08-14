@@ -1,4 +1,4 @@
-# MIA 4.2.0 alpha 9 release notes
+# MIA 4.2.0 alpha 10 release notes
 
 ## Read this first
 
@@ -6,6 +6,20 @@ MIA remains an **early, substantially AI-assisted public alpha**. It has not
 received a professional security audit or independent accuracy validation.
 Automated OSINT results and AI summaries are leads, not proof of identity,
 ownership, intent, compromise, or wrongdoing.
+
+## Complete, verified installer release
+
+Alpha 10 publishes one complete prerelease only after all supported artifacts
+finish building. The release contains the Windows x64 NSIS setup, its dedicated
+SHA-256 file, the self-extracting Linux installer, the small Linux bootstrapper,
+the Python wheel and source distribution, the source ZIP, and one checksum file
+covering the complete set.
+
+The Windows job now runs the generated setup silently in a temporary directory,
+checks that the desktop application, MIA Core sidecar, `uv`, and uninstaller were
+actually installed, and then runs the uninstaller. Discover and Workbench
+sidecars are still health-checked before the setup is built. A missing or empty
+artifact prevents the GitHub prerelease from being published.
 
 ## Native Windows port
 
@@ -35,7 +49,7 @@ same backend, data model, verification, storage, and package manager.
 The intended release asset is:
 
 ```text
-MIA-4.2.0-alpha.9-Windows-x64-Setup.exe
+MIA-4.2.0-alpha.10-Windows-x64-Setup.exe
 ```
 
 A user installs it normally, opens **MIA**, and chooses:
@@ -48,7 +62,7 @@ Python, FastAPI, Uvicorn, the frontends, and the `uv` tool runtime are bundled.
 The application stores persistent data under `%LOCALAPPDATA%\MIA` and user
 configuration under `%APPDATA%\MIA`.
 
-The initial artifact is unsigned and should be distributed with a SHA-256 file.
+The Windows artifact remains unsigned and is distributed with a SHA-256 file.
 Windows 11 x64 is the primary alpha target. See `docs/WINDOWS.md`.
 
 ## Initial Windows tool coverage
@@ -76,6 +90,7 @@ On a Windows development machine:
 ./packaging/windows/build-desktop.ps1
 ```
 
-Or upload the source to GitHub and run the **Windows desktop** Actions workflow.
-The workflow builds the exact PyInstaller sidecar, smoke-tests Discover and
-Workbench, creates the NSIS installer, and uploads it with a SHA-256 file.
+Or publish a matching version tag and let the **Release** Actions workflow build
+the complete asset set. It builds the exact PyInstaller sidecar, smoke-tests
+Discover and Workbench, installs and uninstalls the generated NSIS setup, and
+publishes it only after the portable assets are also ready.

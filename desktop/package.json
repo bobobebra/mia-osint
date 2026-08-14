@@ -1,7 +1,7 @@
 {
   "name": "mia-desktop",
   "private": true,
-  "version": "4.2.0-alpha.9",
+  "version": "4.2.0-alpha.10",
   "scripts": {
     "tauri": "tauri",
     "dev": "tauri dev",
