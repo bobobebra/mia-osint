@@ -47,8 +47,8 @@ Do not publish placeholder URLs.
 ## First tag and release
 
 ```console
-git tag -a v4.2.0-alpha.10 -m "MIA 4.2.0 alpha 10"
-git push origin v4.2.0-alpha.10
+git tag -a v4.2.0-alpha.11 -m "MIA 4.2.0 alpha 11"
+git push origin v4.2.0-alpha.11
 ```
 
 The release workflow builds the Windows x64 setup, self-extracting Linux

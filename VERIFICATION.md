@@ -1,22 +1,23 @@
 # Release verification record
 
-This records checks for **MIA 4.2.0 alpha 10**. It is not a security audit,
+This records checks for **MIA 4.2.0 alpha 11**. It is not a security audit,
 accuracy certification, antivirus guarantee, or certification of every
 third-party tool.
 
 ## Checks completed in the source environment
 
-- Python version metadata reports `4.2.0a10`.
-- The complete test collection contained 181 tests: 180 passed on Linux and the one Windows-only `.cmd` execution test was skipped as intended.
+- Python version metadata reports `4.2.0a11`.
+- The complete test collection contained 183 tests: 182 passed on Linux and the one Windows-only `.cmd` execution test was skipped as intended.
 - Ruff passed for `src` and `tests`.
 - Python source compiled successfully.
 - Windows path, virtual-environment, `.cmd` wrapper, tool capability, and
   `windows-core` regression tests passed.
 - Existing CLI, process, desktop, and package-manager regression groups passed
   after the cross-platform changes.
-- The dedicated MIA Core sidecar started both Discover and Workbench on dynamic
-  localhost ports and returned the expected health version.
-- Tauri CLI accepts the alpha 10 configuration schema and recognizes both
+- The packaged MIA Core sidecar discovered its built-in plugin registry, then
+  started both Discover and Workbench on dynamic localhost ports and returned
+  the expected health version.
+- Tauri CLI accepts the alpha 11 configuration schema and recognizes both
   external sidecars and the NSIS target.
 - Both existing React applications remain packaged by MIA Core rather than being
   duplicated in the desktop shell.
@@ -50,6 +51,6 @@ builder of record for the executable.
 The alpha 9 installer was also downloaded from GitHub, its published SHA-256 was
 verified, and its silent install/uninstall cycle completed on Windows with
 `mia-desktop.exe`, `mia-core.exe`, `uv.exe`, and `uninstall.exe` present. The
-alpha 10 artifact must still be tested manually on clean Windows 11 systems with
+alpha 11 artifact must still be tested manually on clean Windows 11 systems with
 Defender and SmartScreen enabled before broad promotion. Code signing, ARM64,
 WSL tool integration, and broad Windows 10 validation remain future work.

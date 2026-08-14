@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mia-osint"
-version = "4.2.0a10"
+version = "4.2.0a11"
 description = "MIA Core with Discover and Workbench local OSINT interfaces"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"

@@ -10,7 +10,7 @@ def test_version() -> None:
     for arguments in (["version"], ["--version"]):
         result = runner.invoke(app, arguments)
         assert result.exit_code == 0
-        assert "4.2.0a10" in result.stdout
+        assert "4.2.0a11" in result.stdout
 
 
 def test_hash_command(tmp_path, monkeypatch) -> None:
