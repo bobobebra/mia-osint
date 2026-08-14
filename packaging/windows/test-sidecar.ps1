@@ -1,5 +1,6 @@
 param(
   [Parameter(Mandatory = $true)][string]$CoreExe,
+  [Parameter(Mandatory = $true)][string]$ExpectedVersion,
   [ValidateSet("discover", "workbench")][string]$Mode = "discover"
 )
 
@@ -42,7 +43,7 @@ try {
   if ($Ready.status -ne "ready") { throw "MIA Core startup failed: $($Ready.error)" }
   $Health = Invoke-RestMethod -Uri "$($Ready.url)/api/health" -TimeoutSec 15
   if ($Health.status -ne "ok") { throw "Unexpected health response." }
-  if ($Health.version -ne "4.2.0a9") { throw "Expected 4.2.0a9, got $($Health.version)." }
+  if ($Health.version -ne $ExpectedVersion) { throw "Expected $ExpectedVersion, got $($Health.version)." }
   Write-Host "$Mode sidecar smoke test passed at $($Ready.url)."
 }
 finally {

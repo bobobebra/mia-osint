@@ -1,6 +1,6 @@
 # Windows desktop build and support
 
-MIA 4.2.0 alpha 9 introduces the first native Windows port. It keeps one shared
+MIA 4.2.0 alpha 10 includes the native Windows port introduced in alpha 9. It keeps one shared
 **MIA Core** and packages **MIA Discover** and **MIA Workbench** in a Tauri desktop
 shell. The normal Windows user does not need to install Python, Node.js, Rust, or
 open a terminal.
@@ -10,7 +10,7 @@ open a terminal.
 The Windows release asset is:
 
 ```text
-MIA-4.2.0-alpha.9-Windows-x64-Setup.exe
+MIA-4.2.0-alpha.10-Windows-x64-Setup.exe
 ```
 
 1. Download the setup executable and its SHA-256 file from the same GitHub release.
@@ -92,7 +92,10 @@ The script:
 5. bundles `uv.exe` as a managed tool-runtime sidecar;
 6. smoke-tests both sidecar modes on random localhost ports;
 7. builds the Tauri NSIS installer;
-8. writes the installer and SHA-256 file to `dist/windows/`.
+8. silently installs it and checks the bundled desktop, Core, `uv`, and
+   uninstaller executables;
+9. silently uninstalls it;
+10. writes the installer and SHA-256 file to `dist/windows/`.
 
 Skip the repeated Python test suite during local packaging only when it already
 passed in the same checkout:

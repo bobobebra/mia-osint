@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.0a10 — Verified unified installer release
+
+- Unified Python, Linux, source, and Windows artifacts under one tag-driven release workflow.
+- Prevented the standalone Windows workflow and portable release workflow from racing to create the same GitHub release.
+- Added an actual silent install/uninstall smoke test for the generated Windows NSIS setup.
+- Made Windows artifact and sidecar version checks derive from the Python package version instead of duplicated hard-coded values.
+- Required every expected installer and package artifact to exist and pass SHA-256 verification before publishing the prerelease.
+
 ## 4.2.0a9 — Native Windows desktop port
 
 - Added Windows-native `%LOCALAPPDATA%` and `%APPDATA%` storage while retaining one shared MIA Core.

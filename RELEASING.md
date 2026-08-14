@@ -12,7 +12,8 @@
 
 ## Release checklist
 
-1. Update `src/mia/__init__.py` and `pyproject.toml` to the same PEP 440 version.
+1. Update `src/mia/__init__.py`, `pyproject.toml`, the frontend package files,
+   and the Tauri package/configuration to the same release version.
 2. Update `CHANGELOG.md` and compatibility notes.
 3. Run:
 
@@ -37,8 +38,12 @@
 6. Inspect the source archive for reports, databases, caches, tokens, and local
    paths.
 7. Commit, create an annotated tag such as `v4.1.0-alpha.1`, and push it.
-8. Let `.github/workflows/release.yml` build GitHub release assets.
-9. Publish known limitations in the release notes.
+8. Let `.github/workflows/release.yml` build the Python, Linux, source, and
+   Windows release assets. The workflow must not publish until all jobs and the
+   final expected-asset/checksum gate pass.
+9. Confirm that the Windows job passed both sidecar health checks and its silent
+   install/uninstall test.
+10. Publish known limitations in the release notes.
 
 Do not claim a distro is supported solely because its package manager is
 recognized. Record the exact distribution release and architecture actually

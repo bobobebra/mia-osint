@@ -99,7 +99,7 @@ def test_web_health_static_and_empty_overview(tmp_path: Path) -> None:
     with TestClient(create_app(_config(tmp_path))) as client:
         health = client.get("/api/health")
         assert health.status_code == 200
-        assert health.json()["version"] == "4.2.0a9"
+        assert health.json()["version"] == "4.2.0a10"
         overview = client.get("/api/overview")
         assert overview.status_code == 200
         assert overview.json()["stats"]["cases"] == 0

@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-MIA alpha 9 supports a native Windows desktop package and the existing Linux
+MIA alpha 10 supports a native Windows desktop package and the existing Linux
 managed installation. Both use one MIA Core, keep persistent data outside the
 application directory, and avoid installing packages into the system Python
 environment.
@@ -16,8 +16,8 @@ derivative, release, mirror, architecture, or immutable image.
 Download:
 
 ```text
-MIA-4.2.0-alpha.9-Windows-x64-Setup.exe
-MIA-4.2.0-alpha.9-Windows-x64-SHA256.txt
+MIA-4.2.0-alpha.10-Windows-x64-Setup.exe
+MIA-4.2.0-alpha.10-Windows-x64-SHA256.txt
 ```
 
 Verify the installer hash, run the setup program, and open **MIA** from the Start
@@ -67,8 +67,8 @@ remote installer script before running it.
 ## Source-archive installation
 
 ```console
-unzip MIA-v4.2.0-alpha.9-windows-port.zip
-cd mia-osint-4.2.0-alpha.9
+unzip MIA-v4.2.0-alpha.10.zip
+cd mia-osint-4.2.0-alpha.10
 bash install.sh
 ```
 
