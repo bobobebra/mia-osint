@@ -30,7 +30,7 @@ mia investigate octocat --type username --name "Octocat research" --pivot
 
 ## Project status
 
-- Release: **4.2.0 alpha 10** (`4.2.0a10`)
+- Release: **4.2.0 alpha 11** (`4.2.0a11`)
 - Stability: **early alpha — expect rough edges**
 - Development: **built with substantial AI assistance and human review**
 - Independent audit: **not yet**
@@ -155,7 +155,7 @@ Both bind to localhost by default. See [docs/UI.md](docs/UI.md).
 Download the x64 installer from the GitHub release:
 
 ```text
-MIA-4.2.0-alpha.10-Windows-x64-Setup.exe
+MIA-4.2.0-alpha.11-Windows-x64-Setup.exe
 ```
 
 Run it, open **MIA** from the Start menu, and choose **MIA Discover** or
@@ -188,8 +188,8 @@ bash MIA-Linux-Installer.run --mia-only --yes
 ### Install from the source archive on Linux
 
 ```console
-unzip MIA-v4.2.0-alpha.10.zip
-cd mia-osint-4.2.0-alpha.10
+unzip MIA-v4.2.0-alpha.11.zip
+cd mia-osint-4.2.0-alpha.11
 bash install.sh
 ```
 

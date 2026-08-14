@@ -1,4 +1,4 @@
-# MIA 4.2.0 alpha 10 release notes
+# MIA 4.2.0 alpha 11 release notes
 
 ## Read this first
 
@@ -7,9 +7,17 @@ received a professional security audit or independent accuracy validation.
 Automated OSINT results and AI summaries are leads, not proof of identity,
 ownership, intent, compromise, or wrongdoing.
 
+## Windows username-search hotfix
+
+Alpha 11 fixes the Windows error `No module named 'mia.plugins'` that appeared
+when a Discover investigation started. The frozen MIA Core sidecar now includes
+all built-in plugins used by dynamic discovery. The Windows build also runs the
+packaged executable's plugin-registry self-test for both Discover and Workbench
+before it can publish an installer.
+
 ## Complete, verified installer release
 
-Alpha 10 publishes one complete prerelease only after all supported artifacts
+Alpha 11 publishes one complete prerelease only after all supported artifacts
 finish building. The release contains the Windows x64 NSIS setup, its dedicated
 SHA-256 file, the self-extracting Linux installer, the small Linux bootstrapper,
 the Python wheel and source distribution, the source ZIP, and one checksum file
@@ -49,7 +57,7 @@ same backend, data model, verification, storage, and package manager.
 The intended release asset is:
 
 ```text
-MIA-4.2.0-alpha.10-Windows-x64-Setup.exe
+MIA-4.2.0-alpha.11-Windows-x64-Setup.exe
 ```
 
 A user installs it normally, opens **MIA**, and chooses:

@@ -6,7 +6,7 @@ from PyInstaller.utils.hooks import collect_data_files, collect_submodules, copy
 ROOT = Path(SPECPATH).resolve().parents[1]
 
 hiddenimports = []
-for package in ("keyring.backends", "uvicorn", "websockets", "multipart"):
+for package in ("mia.plugins", "keyring.backends", "uvicorn", "websockets", "multipart"):
     hiddenimports.extend(collect_submodules(package))
 
 datas = collect_data_files("mia", include_py_files=False)

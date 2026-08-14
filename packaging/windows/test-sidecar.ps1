@@ -9,6 +9,28 @@ $Handshake = Join-Path $env:TEMP "mia-sidecar-$Mode-$PID.json"
 $Stdout = Join-Path $env:TEMP "mia-sidecar-$Mode-$PID.stdout.log"
 $Stderr = Join-Path $env:TEMP "mia-sidecar-$Mode-$PID.stderr.log"
 Remove-Item $Handshake, $Stdout, $Stderr -Force -ErrorAction SilentlyContinue
+$SelfTest = Start-Process -FilePath $CoreExe -ArgumentList @(
+  "--self-test",
+  "--handshake", $Handshake
+) -PassThru -Wait -WindowStyle Hidden
+if ($SelfTest.ExitCode -ne 0) {
+  $Failure = if (Test-Path $Handshake) {
+    (Get-Content $Handshake -Raw | ConvertFrom-Json).error
+  } else {
+    "MIA Core did not create a self-test result."
+  }
+  throw "MIA Core plugin self-test failed: $Failure"
+}
+$SelfTestResult = Get-Content $Handshake -Raw | ConvertFrom-Json
+if ($SelfTestResult.status -ne "ok" -or $SelfTestResult.plugin_count -lt 1) {
+  throw "MIA Core plugin self-test returned an invalid result."
+}
+if ($SelfTestResult.version -ne $ExpectedVersion) {
+  throw "Expected $ExpectedVersion, got $($SelfTestResult.version)."
+}
+Write-Host "$Mode packaged plugin discovery passed with $($SelfTestResult.plugin_count) plugins."
+Remove-Item $Handshake -Force
+
 $Process = Start-Process -FilePath $CoreExe -ArgumentList @(
   "--mode", $Mode,
   "--port", "0",

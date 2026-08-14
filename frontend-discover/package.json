@@ -1,7 +1,7 @@
 {
   "name": "mia-discover-ui",
   "private": true,
-  "version": "4.2.0-alpha.10",
+  "version": "4.2.0-alpha.11",
   "type": "module",
   "scripts": {
     "dev": "vite",

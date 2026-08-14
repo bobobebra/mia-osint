@@ -163,7 +163,7 @@ if [[ "$1" == "pip" && "$2" == "install" ]]; then
   cat > "$bin_dir/mia" <<'EOF'
 #!/usr/bin/env bash
 case "${{1:-}}" in
-  --version|version) echo 4.2.0a10 ;;
+  --version|version) echo 4.2.0a11 ;;
   doctor) echo 'doctor ok' ;;
   *) echo 'fake mia' ;;
 esac
@@ -218,11 +218,11 @@ def test_installer_upgrades_existing_environment_without_embedded_pip(tmp_path: 
         text=True,
         env=env,
     )
-    assert "Installed and verified MIA 4.2.0a10" in completed.stdout
+    assert "Installed and verified MIA 4.2.0a11" in completed.stdout
     version = subprocess.run(
         [str(bin_dir / "mia"), "--version"], check=True, capture_output=True, text=True
     )
-    assert version.stdout.strip() == "4.2.0a10"
+    assert version.stdout.strip() == "4.2.0a11"
     assert not (state / "venv.previous").exists()
 
 

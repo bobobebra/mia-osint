@@ -1,6 +1,6 @@
 # Windows desktop build and support
 
-MIA 4.2.0 alpha 10 includes the native Windows port introduced in alpha 9. It keeps one shared
+MIA 4.2.0 alpha 11 includes the native Windows port introduced in alpha 9. It keeps one shared
 **MIA Core** and packages **MIA Discover** and **MIA Workbench** in a Tauri desktop
 shell. The normal Windows user does not need to install Python, Node.js, Rust, or
 open a terminal.
@@ -10,7 +10,7 @@ open a terminal.
 The Windows release asset is:
 
 ```text
-MIA-4.2.0-alpha.10-Windows-x64-Setup.exe
+MIA-4.2.0-alpha.11-Windows-x64-Setup.exe
 ```
 
 1. Download the setup executable and its SHA-256 file from the same GitHub release.

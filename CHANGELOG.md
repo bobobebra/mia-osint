@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.0a11 — Windows plugin bundle hotfix
+
+- Included the dynamically discovered `mia.plugins` package in the frozen Windows MIA Core executable.
+- Added a packaged sidecar self-test that loads the built-in plugin registry before an installer can pass CI.
+- Added regression coverage for successful discovery and the exact missing-package failure reported by alpha 10 users.
+
 ## 4.2.0a10 — Verified unified installer release
 
 - Unified Python, Linux, source, and Windows artifacts under one tag-driven release workflow.
