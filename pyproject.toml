@@ -48,7 +48,7 @@ Source = "https://github.com/bobobebra/mia-osint"
 
 [project.optional-dependencies]
 vision = [
-  "Pillow>=10,<13",
+  "Pillow>=10,<14",
 ]
 dev = [
   "pytest>=8,<10",
